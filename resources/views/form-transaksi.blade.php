@@ -43,14 +43,14 @@
                 <label class="block text-sm font-semibold text-gray-800 mb-2">Tipe Transaksi</label>
                 <input type="hidden" name="type" id="type" value="{{ old('type', $transaction->type ?? 'out') }}">
                 
-                <div class="flex rounded-lg shadow-sm">
-                    <button type="button" data-val="in" class="btn-type w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 -ms-px first:rounded-s-lg first:ms-0 last:rounded-e-lg text-sm font-medium focus:z-10 border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
+                <div class="flex bg-gray-100 hover:bg-gray-200 rounded-lg transition p-1 dark:bg-neutral-700 dark:hover:bg-neutral-600" role="tablist" aria-orientation="horizontal">
+                    <button type="button" data-val="in" class="btn-type hs-tab-active:bg-white hs-tab-active:text-emerald-600 hs-tab-active:shadow-sm w-full py-2.5 px-4 inline-flex justify-center items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 hover:text-gray-700 rounded-lg focus:outline-none focus:text-gray-700 disabled:opacity-50 disabled:pointer-events-none active" id="segment-item-in" data-hs-tab="#segment-in" aria-controls="segment-in" role="tab">
                         Pemasukan
                     </button>
-                    <button type="button" data-val="out" class="btn-type w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 -ms-px first:rounded-s-lg first:ms-0 last:rounded-e-lg text-sm font-medium focus:z-10 border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
+                    <button type="button" data-val="out" class="btn-type hs-tab-active:bg-white hs-tab-active:text-rose-600 hs-tab-active:shadow-sm w-full py-2.5 px-4 inline-flex justify-center items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 hover:text-gray-700 rounded-lg focus:outline-none focus:text-gray-700 disabled:opacity-50 disabled:pointer-events-none" id="segment-item-out" data-hs-tab="#segment-out" aria-controls="segment-out" role="tab">
                         Pengeluaran
                     </button>
-                    <button type="button" data-val="transfer" class="btn-type w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 -ms-px first:rounded-s-lg first:ms-0 last:rounded-e-lg text-sm font-medium focus:z-10 border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
+                    <button type="button" data-val="transfer" class="btn-type hs-tab-active:bg-white hs-tab-active:text-blue-600 hs-tab-active:shadow-sm w-full py-2.5 px-4 inline-flex justify-center items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 hover:text-gray-700 rounded-lg focus:outline-none focus:text-gray-700 disabled:opacity-50 disabled:pointer-events-none" id="segment-item-transfer" data-hs-tab="#segment-transfer" aria-controls="segment-transfer" role="tab">
                         Mutasi
                     </button>
                 </div>
@@ -63,7 +63,14 @@
 
             <div id="wrapper_source_account">
                 <label for="source_account_id" class="block text-sm font-semibold text-gray-800 mb-2" id="label_source_account">Rekening Sumber</label>
-                <select id="source_account_id" name="source_account_id" class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm" required>
+                <select id="source_account_id" name="source_account_id" data-hs-select='{
+                    "placeholder": "Pilih Rekening",
+                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+                    "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto",
+                    "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
+                    "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                }' class="hidden" required>
                     <option value="">Pilih Rekening</option>
                     @foreach($accounts as $acc)
                         <option value="{{ $acc->id }}" {{ old('source_account_id', $transaction->source_account_id ?? '') == $acc->id ? 'selected' : '' }}>{{ $acc->name }}</option>
@@ -73,7 +80,14 @@
 
             <div id="wrapper_dest_account" class="hidden">
                 <label for="destination_account_id" class="block text-sm font-semibold text-gray-800 mb-2">Rekening Tujuan (Mutasi)</label>
-                <select id="destination_account_id" name="destination_account_id" class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm">
+                <select id="destination_account_id" name="destination_account_id" data-hs-select='{
+                    "placeholder": "Pilih Rekening Tujuan",
+                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+                    "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto",
+                    "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
+                    "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                }' class="hidden">
                     <option value="">Pilih Rekening Tujuan</option>
                     @foreach($accounts as $acc)
                         <option value="{{ $acc->id }}" {{ old('destination_account_id', $transaction->destination_account_id ?? '') == $acc->id ? 'selected' : '' }}>{{ $acc->name }}</option>
@@ -83,7 +97,14 @@
 
             <div id="wrapper_category">
                 <label for="category_id" class="block text-sm font-semibold text-gray-800 mb-2">Kategori</label>
-                <select id="category_id" name="category_id" class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm">
+                <select id="category_id" name="category_id" data-hs-select='{
+                    "placeholder": "Pilih Kategori",
+                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+                    "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto",
+                    "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
+                    "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                }' class="hidden">
                     <option value="">Pilih Kategori</option>
                     @foreach($categories as $cat)
                         <option value="{{ $cat->id }}" data-type="{{ $cat->type }}" {{ old('category_id', $transaction->category_id ?? '') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
@@ -93,7 +114,14 @@
 
             <div id="wrapper_allocation">
                 <label for="allocation" class="block text-sm font-semibold text-gray-800 mb-2">Peruntukan Dana</label>
-                <select id="allocation" name="allocation" class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm">
+                <select id="allocation" name="allocation" data-hs-select='{
+                    "placeholder": "Pilih Peruntukan",
+                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+                    "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto",
+                    "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
+                    "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                }' class="hidden">
                     @php $allocs = ['Pribadi', 'Istri', 'Bersama', 'Kantor']; @endphp
                     @foreach($allocs as $alloc)
                         <option value="{{ $alloc }}" {{ old('allocation', $transaction->allocation ?? 'Pribadi') == $alloc ? 'selected' : '' }}>{{ $alloc }}</option>
@@ -237,18 +265,15 @@
 
         // Logic for Type Buttons
         function updateTypeUI(val) {
-            // Update buttons styling
+            // Update buttons styling (Tailwind classes for active tab logic)
             btnTypes.forEach(btn => {
                 const btnVal = btn.getAttribute('data-val');
-                btn.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-600', 'bg-rose-600', 'border-rose-600', 'bg-blue-600', 'border-blue-600');
-                btn.classList.add('bg-white', 'text-gray-800', 'border-gray-200');
+                btn.classList.remove('active', 'hs-tab-active:bg-white', 'hs-tab-active:shadow-sm');
+                btn.setAttribute('aria-selected', 'false');
                 
                 if (btnVal === val) {
-                    btn.classList.remove('bg-white', 'text-gray-800', 'border-gray-200');
-                    btn.classList.add('text-white');
-                    if (val === 'in') btn.classList.add('bg-emerald-600', 'border-emerald-600');
-                    if (val === 'out') btn.classList.add('bg-rose-600', 'border-rose-600');
-                    if (val === 'transfer') btn.classList.add('bg-blue-600', 'border-blue-600');
+                    btn.classList.add('active', 'hs-tab-active:bg-white', 'hs-tab-active:shadow-sm');
+                    btn.setAttribute('aria-selected', 'true');
                 }
             });
 

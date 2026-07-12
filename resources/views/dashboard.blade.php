@@ -172,14 +172,28 @@
                     </div>
                     <input type="text" id="searchInput" placeholder="Cari catatan..." class="py-2 ps-10 pe-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm">
                 </div>
-                <select id="categoryFilter" class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm">
+                <select id="categoryFilter" data-hs-select='{
+                    "placeholder": "Semua Kategori",
+                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-3 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+                    "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto",
+                    "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
+                    "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                }' class="hidden">
                     <option value="">Semua Kategori</option>
                     @foreach($categories as $cat)
                         <option value="{{ $cat->name }}">{{ $cat->name }}</option>
                     @endforeach
                 </select>
                 <form id="formTimeFilter" action="{{ route('dashboard') }}" method="GET" class="flex flex-col sm:flex-row gap-2 items-center">
-                    <select name="time_mode" id="time_mode" class="py-2 px-3 block w-full sm:w-auto border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm" onchange="toggleTimeInputs()">
+                    <select name="time_mode" id="time_mode" data-hs-select='{
+                        "placeholder": "Pilih Waktu",
+                        "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                        "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-3 pe-9 flex gap-x-2 text-nowrap w-full sm:w-auto cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+                        "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto",
+                        "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
+                        "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                    }' class="hidden" onchange="toggleTimeInputs()">
                         <option value="all" {{ request('time_mode') == 'all' ? 'selected' : '' }}>Semua Waktu</option>
                         <option value="daily" {{ request('time_mode') == 'daily' ? 'selected' : '' }}>Harian Spesifik</option>
                         <option value="monthly" {{ request('time_mode') == 'monthly' ? 'selected' : '' }}>Bulanan Spesifik</option>

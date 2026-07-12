@@ -84,16 +84,13 @@
             <div id="wrapper_source_account">
                 <label for="source_account_id" class="block text-sm font-semibold text-gray-800 mb-2" id="label_source_account">Rekening Sumber</label>
                 <select id="source_account_id" name="source_account_id" data-hs-select='{
-                    "placeholder": "Cari rekening...",
-                    "hasSearch": true,
-                    "searchPlaceholder": "Ketik nama rekening...",
-                    "searchWrapperClasses": "p-2 sticky top-0 bg-white z-10 border-b border-gray-100",
-                    "searchClasses": "py-2 px-3 block w-full bg-white border-gray-200 rounded-lg text-sm focus:border-sekunder focus:ring-sekunder",
-                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
-                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 pl-4 pr-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-lg text-start text-sm hover:bg-gray-50 focus:outline-none focus:border-sekunder focus:ring-sekunder",
-                    "dropdownClasses": "mt-2 z-[100] w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden overflow-y-auto",
-                    "optionClasses": "hs-selected:bg-green-50 hs-selected:text-sekunder py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
-                    "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><div class=\"flex items-center w-full\"><img class=\"shrink-0 size-5 me-3 object-contain\" data-icon src=\"\" alt=\"\"><span data-title></span></div><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-sekunder\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                  "placeholder": "Pilih rekening...",
+                  "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                  "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 pl-4 pr-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-lg text-left text-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50",
+                  "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
+                  "optionClasses": "hs-selected:bg-blue-50 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50",
+                  "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
+                  "extraMarkup": "<div class=\"absolute top-1/2 -translate-y-1/2\" style=\"right: 0.75rem;\"><svg class=\"shrink-0 size-3.5 text-gray-400\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
                 }' class="hidden" required>
                     <option value="">Pilih Rekening</option>
                     @foreach($accounts as $acc)
@@ -105,16 +102,13 @@
             <div id="wrapper_dest_account" class="hidden">
                 <label for="destination_account_id" class="block text-sm font-semibold text-gray-800 mb-2">Rekening Tujuan (Mutasi)</label>
                 <select id="destination_account_id" name="destination_account_id" data-hs-select='{
-                    "placeholder": "Cari rekening...",
-                    "hasSearch": true,
-                    "searchPlaceholder": "Ketik nama rekening...",
-                    "searchWrapperClasses": "p-2 sticky top-0 bg-white z-10 border-b border-gray-100",
-                    "searchClasses": "py-2 px-3 block w-full bg-white border-gray-200 rounded-lg text-sm focus:border-sekunder focus:ring-sekunder",
-                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
-                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 pl-4 pr-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-lg text-start text-sm hover:bg-gray-50 focus:outline-none focus:border-sekunder focus:ring-sekunder",
-                    "dropdownClasses": "mt-2 z-[100] w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden overflow-y-auto",
-                    "optionClasses": "hs-selected:bg-green-50 hs-selected:text-sekunder py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
-                    "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><div class=\"flex items-center w-full\"><img class=\"shrink-0 size-5 me-3 object-contain\" data-icon src=\"\" alt=\"\"><span data-title></span></div><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-sekunder\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                  "placeholder": "Pilih rekening tujuan...",
+                  "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                  "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 pl-4 pr-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-lg text-left text-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50",
+                  "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
+                  "optionClasses": "hs-selected:bg-blue-50 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50",
+                  "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
+                  "extraMarkup": "<div class=\"absolute top-1/2 -translate-y-1/2\" style=\"right: 0.75rem;\"><svg class=\"shrink-0 size-3.5 text-gray-400\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
                 }' class="hidden">
                     <option value="">Pilih Rekening Tujuan</option>
                     @foreach($accounts as $acc)
@@ -126,16 +120,13 @@
             <div id="wrapper_category">
                 <label for="category_id" class="block text-sm font-semibold text-gray-800 mb-2">Kategori</label>
                 <select id="category_id" name="category_id" data-hs-select='{
-                    "placeholder": "Cari kategori...",
-                    "hasSearch": true,
-                    "searchPlaceholder": "Ketik kategori...",
-                    "searchWrapperClasses": "p-2 sticky top-0 bg-white z-10 border-b border-gray-100",
-                    "searchClasses": "py-2 px-3 block w-full bg-white border-gray-200 rounded-lg text-sm focus:border-sekunder focus:ring-sekunder",
-                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
-                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 pl-4 pr-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-lg text-start text-sm hover:bg-gray-50 focus:outline-none focus:border-sekunder focus:ring-sekunder",
-                    "dropdownClasses": "mt-2 z-[100] w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden overflow-y-auto",
-                    "optionClasses": "hs-selected:bg-green-50 hs-selected:text-sekunder py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
-                    "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><div class=\"flex items-center w-full\"><span class=\"shrink-0 me-3 text-lg\" data-icon></span><span data-title></span></div><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-sekunder\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                  "placeholder": "Pilih kategori...",
+                  "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                  "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 pl-4 pr-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-lg text-left text-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50",
+                  "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
+                  "optionClasses": "hs-selected:bg-blue-50 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50",
+                  "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
+                  "extraMarkup": "<div class=\"absolute top-1/2 -translate-y-1/2\" style=\"right: 0.75rem;\"><svg class=\"shrink-0 size-3.5 text-gray-400\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
                 }' class="hidden">
                     <option value="">Pilih Kategori</option>
                     @foreach($categories as $cat)
@@ -147,11 +138,13 @@
             <div id="wrapper_allocation">
                 <label for="allocation" class="block text-sm font-semibold text-gray-800 mb-2">Peruntukan Dana</label>
                 <select id="allocation" name="allocation" data-hs-select='{
-                    "placeholder": "Pilih Peruntukan",
-                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
-                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 pl-4 pr-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-lg text-start text-sm hover:bg-gray-50 focus:outline-none focus:border-blue-500 focus:ring-blue-500",
-                    "dropdownClasses": "mt-2 z-[100] w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden overflow-y-auto",
-                    "optionClasses": "hs-selected:bg-blue-50 hs-selected:text-blue-600 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100"
+                  "placeholder": "Pilih Peruntukan...",
+                  "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                  "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 pl-4 pr-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-lg text-left text-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50",
+                  "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
+                  "optionClasses": "hs-selected:bg-blue-50 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50",
+                  "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
+                  "extraMarkup": "<div class=\"absolute top-1/2 -translate-y-1/2\" style=\"right: 0.75rem;\"><svg class=\"shrink-0 size-3.5 text-gray-400\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
                 }' class="hidden">
                     @php $allocs = ['Pribadi', 'Istri', 'Bersama', 'Kantor']; @endphp
                     @foreach($allocs as $alloc)
@@ -249,6 +242,9 @@
             @endif
         </div>
     </form>
+    
+    <!-- Dummy div to force Tailwind to compile classes used inside JSON data attributes -->
+    <div class="hidden right-3 pl-4 pr-9 text-left absolute top-1/2 -translate-y-1/2"></div>
 </div>
 @endsection
 
@@ -535,6 +531,13 @@
                 amountHidden.value = '0';
             }
         });
+        // Ensure Preline re-initializes Selects after we've changed their wrapper visibility
+        setTimeout(() => {
+            if (window.HSStaticMethods && typeof window.HSStaticMethods.autoInit === 'function') {
+                window.HSStaticMethods.autoInit();
+            }
+        }, 100);
+
     });
 </script>
 @endpush

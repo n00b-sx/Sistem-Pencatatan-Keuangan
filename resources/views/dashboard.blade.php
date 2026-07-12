@@ -89,19 +89,19 @@
             </div>
             <div class="overflow-x-auto max-h-[16rem] overflow-y-auto pr-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full">
                 <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-white sticky top-0 z-10 shadow-sm">
+                    <thead class="bg-white sticky top-0 z-10">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-start text-xs font-semibold text-gray-500 uppercase">Peruntukan</th>
-                            <th scope="col" class="px-6 py-3 text-end text-xs font-semibold text-gray-500 uppercase">Pemasukan</th>
-                            <th scope="col" class="px-6 py-3 text-end text-xs font-semibold text-gray-500 uppercase">Pengeluaran</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Peruntukan</th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Pemasukan</th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Pengeluaran</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
                         @foreach($peruntukan as $name => $data)
                         <tr class="hover:bg-gray-50 transition">
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-800">{{ $name }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-emerald-600 text-end">Rp {{ number_format($data['in'], 0, ',', '.') }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-rose-600 text-end">Rp {{ number_format($data['out'], 0, ',', '.') }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-emerald-600 text-right">Rp {{ number_format($data['in'], 0, ',', '.') }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-rose-600 text-right">Rp {{ number_format($data['out'], 0, ',', '.') }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -198,7 +198,13 @@
 
               <!-- Bulan & Tahun Filter -->
               <div class="flex items-center gap-2 w-full sm:w-auto">
-                <select id="filter-month" class="py-2 px-3 block w-full sm:w-32 bg-white border border-gray-200 rounded-lg shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600">
+                <select id="filter-month" class="hidden" data-hs-select='{
+                  "placeholder": "Semua Bulan",
+                  "toggleClasses": "relative py-2 px-3 pr-9 flex text-nowrap w-full sm:w-40 cursor-pointer bg-white border border-gray-200 rounded-lg text-left text-sm text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50",
+                  "dropdownClasses": "mt-2 z-[100] w-full sm:w-40 max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden overflow-y-auto",
+                  "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-md focus:outline-none focus:bg-gray-100",
+                  "extraMarkup": "<div class=\"absolute top-1/2 -translate-y-1/2\" style=\"right: 0.75rem;\"><svg class=\"shrink-0 size-3.5 text-gray-400\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
+                }'>
                   <option value="">Semua Bulan</option>
                   <option value="1">Januari</option>
                   <option value="2">Februari</option>
@@ -213,7 +219,13 @@
                   <option value="11">November</option>
                   <option value="12">Desember</option>
                 </select>
-                <select id="filter-year" class="py-2 px-3 block w-full sm:w-28 bg-white border border-gray-200 rounded-lg shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500 text-gray-600">
+                <select id="filter-year" class="hidden" data-hs-select='{
+                  "placeholder": "Semua Tahun",
+                  "toggleClasses": "relative py-2 px-3 pr-9 flex text-nowrap w-full sm:w-36 cursor-pointer bg-white border border-gray-200 rounded-lg text-left text-sm text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50",
+                  "dropdownClasses": "mt-2 z-[100] w-full sm:w-36 max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden overflow-y-auto",
+                  "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-md focus:outline-none focus:bg-gray-100",
+                  "extraMarkup": "<div class=\"absolute top-1/2 -translate-y-1/2\" style=\"right: 0.75rem;\"><svg class=\"shrink-0 size-3.5 text-gray-400\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
+                }'>
                   <option value="">Semua Tahun</option>
                   @php $currentYear = date('Y'); @endphp
                   @for($i = $currentYear; $i >= $currentYear - 5; $i--)
@@ -375,6 +387,20 @@
             </div>
           </div>
         </div>
+    </div> <!-- Penutup untuk div wrapper Rincian Riwayat Transaksi -->
+
+    <!-- Summary Totals Card (Di luar datatable) -->
+    <div class="mt-6 flex flex-col bg-white border border-gray-200 shadow-sm rounded-xl overflow-hidden">
+        <div class="p-6 grid grid-cols-2 gap-6" style="padding: 1.5rem;">
+                <div>
+                    <div class="text-xs font-medium text-gray-500 uppercase tracking-wider">Total Pemasukan</div>
+                    <div class="mt-1 text-2xl font-bold text-green-600" id="total-pemasukan-val">Rp 0</div>
+                </div>
+                <div class="text-right">
+                    <div class="text-xs font-medium text-gray-500 uppercase tracking-wider">Total Pengeluaran</div>
+                    <div class="mt-1 text-2xl font-bold text-red-600" id="total-pengeluaran-val">Rp 0</div>
+                </div>
+            </div>
     </div>
 @endsection
 
@@ -388,6 +414,16 @@
       // Inisialisasi DataTable Preline
       const { dataTable } = new HSDataTable('#hs-datatable-transaksi');
       
+      // Fix: Inisialisasi manual select filter karena terhalang --prevent-on-load-init
+      const dtContainer = document.querySelector('#hs-datatable-transaksi');
+      if (dtContainer) {
+          dtContainer.classList.remove('--prevent-on-load-init');
+          if (window.HSStaticMethods && typeof window.HSStaticMethods.autoInit === 'function') {
+              window.HSStaticMethods.autoInit(['select']);
+          }
+          dtContainer.classList.add('--prevent-on-load-init');
+      }
+
       // Fix: Datatables removes DOM elements and clones them, which destroys Preline's JS events.
       // We must re-initialize tooltips every time the table body changes (pagination, search, sort).
       const reinitPrelinePlugins = () => {
@@ -460,14 +496,103 @@
         return matchTipe && matchDate;
       });
 
-      // Jika dropdown tipe diubah, gambar ulang tabelnya
-      tipeEl.addEventListener('change', () => dataTable.draw());
+      // Helper function: Hitung total berdasar filter aktif
+      window.transactionsData = [
+      @foreach($transactions as $trx)
+          @php
+              $rowText = $trx->date->format('d/m/Y') . ' ' . 
+                          ($trx->type == 'in' ? 'Pemasukan' : ($trx->type == 'out' ? 'Pengeluaran' : 'Mutasi')) . ' ' . 
+                          ($trx->category ? $trx->category->name : '-') . ' ' . 
+                          'Rp ' . number_format($trx->amount, 0, ',', '.') . ' ' . 
+                          ($trx->description ?? 'Tanpa Keterangan');
+              if($trx->details) {
+                  foreach($trx->details as $item) {
+                      $rowText .= ' ' . $item->name . ' ' . ($item->qty ?? 1) . 'x @ Rp' . number_format($item->price, 0, ',', '.') . ' Rp' . number_format(($item->qty ?? 1) * $item->price, 0, ',', '.');
+                  }
+              }
+              $rowText = strtolower($rowText);
+          @endphp
+          {
+              type: "{{ $trx->type == 'in' ? 'Pemasukan' : ($trx->type == 'out' ? 'Pengeluaran' : 'Mutasi') }}",
+              amount: {{ $trx->amount }},
+              dateStr: "{{ $trx->date->format('d/m/Y') }}",
+              searchStr: {!! json_encode($rowText) !!}
+          },
+      @endforeach
+      ];
+
+      const calculateTotals = () => {
+          const filterTipe = tipeEl.value;
+          const startInput = document.querySelector('#filter-start-date').value;
+          const endInput = document.querySelector('#filter-end-date').value;
+          const monthInput = document.querySelector('#filter-month').value;
+          const yearInput = document.querySelector('#filter-year').value;
+          const searchInput = document.querySelector('#hs-table-search').value.toLowerCase();
+
+          let start = null;
+          let end = null;
+          
+          if (startInput) {
+              const pStart = startInput.split('-');
+              start = new Date(pStart[0], pStart[1]-1, pStart[2]);
+          }
+          if (endInput) {
+              const pEnd = endInput.split('-');
+              end = new Date(pEnd[0], pEnd[1]-1, pEnd[2], 23, 59, 59, 999);
+          }
+
+          let totalPemasukan = 0;
+          let totalPengeluaran = 0;
+
+          window.transactionsData.forEach(trx => {
+              if (filterTipe !== 'all' && filterTipe !== '' && trx.type !== filterTipe) return;
+
+              const parts = trx.dateStr.split('/');
+              let rowDate = null;
+              if(parts.length === 3) rowDate = new Date(parts[2], parts[1]-1, parts[0]);
+
+              if (start && rowDate && rowDate < start) return;
+              if (end && rowDate && rowDate > end) return;
+              if (monthInput && rowDate && (rowDate.getMonth() + 1).toString() !== monthInput) return;
+              if (yearInput && rowDate && rowDate.getFullYear().toString() !== yearInput) return;
+
+              if (searchInput) {
+                  const searchTerms = searchInput.split(' ').filter(t => t.trim() !== '');
+                  let match = true;
+                  for (const term of searchTerms) {
+                      if (!trx.searchStr.includes(term)) {
+                          match = false;
+                          break;
+                      }
+                  }
+                  if (!match) return;
+              }
+
+              if (trx.type === 'Pemasukan') {
+                  totalPemasukan += trx.amount;
+              } else if (trx.type === 'Pengeluaran') {
+                  totalPengeluaran += trx.amount;
+              }
+          });
+
+          document.querySelector('#total-pemasukan-val').innerText = 'Rp ' + totalPemasukan.toLocaleString('id-ID');
+          document.querySelector('#total-pengeluaran-val').innerText = 'Rp ' + totalPengeluaran.toLocaleString('id-ID');
+      };
+
+      // Hitung total saat halaman dimuat
+      calculateTotals();
+
+      // Jika dropdown tipe diubah, gambar ulang tabelnya dan hitung ulang
+      tipeEl.addEventListener('change', () => { dataTable.draw(); calculateTotals(); });
 
       // Tambahkan event listener untuk filter tanggal, bulan, dan tahun
-      document.querySelector('#filter-start-date').addEventListener('change', () => dataTable.draw());
-      document.querySelector('#filter-end-date').addEventListener('change', () => dataTable.draw());
-      document.querySelector('#filter-month').addEventListener('change', () => dataTable.draw());
-      document.querySelector('#filter-year').addEventListener('change', () => dataTable.draw());
+      document.querySelector('#filter-start-date').addEventListener('change', () => { dataTable.draw(); calculateTotals(); });
+      document.querySelector('#filter-end-date').addEventListener('change', () => { dataTable.draw(); calculateTotals(); });
+      document.querySelector('#filter-month').addEventListener('change', () => { dataTable.draw(); calculateTotals(); });
+      document.querySelector('#filter-year').addEventListener('change', () => { dataTable.draw(); calculateTotals(); });
+      
+      // Hitung ulang juga ketika input pencarian diubah
+      document.querySelector('#hs-table-search').addEventListener('keyup', () => { calculateTotals(); });
     })();
   });
 

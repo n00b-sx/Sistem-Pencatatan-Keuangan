@@ -84,6 +84,10 @@
             <div id="wrapper_source_account">
                 <label for="source_account_id" class="block text-sm font-semibold text-gray-800 mb-2" id="label_source_account">Rekening Sumber</label>
                 <select id="source_account_id" name="source_account_id" data-hs-select='{
+                  "hasSearch": true,
+                  "searchPlaceholder": "Cari rekening...",
+                  "searchClasses": "block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 py-2 px-3",
+                  "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 z-10",
                   "placeholder": "Pilih rekening...",
                   "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
                   "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 pl-4 pr-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-lg text-left text-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50",
@@ -102,6 +106,10 @@
             <div id="wrapper_dest_account" class="hidden">
                 <label for="destination_account_id" class="block text-sm font-semibold text-gray-800 mb-2">Rekening Tujuan (Mutasi)</label>
                 <select id="destination_account_id" name="destination_account_id" data-hs-select='{
+                  "hasSearch": true,
+                  "searchPlaceholder": "Cari rekening tujuan...",
+                  "searchClasses": "block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 py-2 px-3",
+                  "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 z-10",
                   "placeholder": "Pilih rekening tujuan...",
                   "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
                   "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 pl-4 pr-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-lg text-left text-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50",
@@ -120,6 +128,10 @@
             <div id="wrapper_category">
                 <label for="category_id" class="block text-sm font-semibold text-gray-800 mb-2">Kategori</label>
                 <select id="category_id" name="category_id" data-hs-select='{
+                  "hasSearch": true,
+                  "searchPlaceholder": "Cari kategori...",
+                  "searchClasses": "block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 py-2 px-3",
+                  "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 z-10",
                   "placeholder": "Pilih kategori...",
                   "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
                   "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 pl-4 pr-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-lg text-left text-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50",
@@ -138,6 +150,10 @@
             <div id="wrapper_allocation">
                 <label for="allocation" class="block text-sm font-semibold text-gray-800 mb-2">Peruntukan Dana</label>
                 <select id="allocation" name="allocation" data-hs-select='{
+                  "hasSearch": true,
+                  "searchPlaceholder": "Cari peruntukan...",
+                  "searchClasses": "block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 py-2 px-3",
+                  "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 z-10",
                   "placeholder": "Pilih Peruntukan...",
                   "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
                   "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 pl-4 pr-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-lg text-left text-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50",

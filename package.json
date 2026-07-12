@@ -15,6 +15,9 @@
         "vite": "^7.0.7"
     },
     "dependencies": {
+        "@preline/datatable": "^4.2.0",
+        "datatables.net-dt": "^2.3.8",
+        "jquery": "^4.0.0",
         "preline": "^4.2.0"
     }
 }

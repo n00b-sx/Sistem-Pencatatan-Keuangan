@@ -41,33 +41,38 @@
             <!-- Tombol Tipe Transaksi -->
             <div class="sm:col-span-2">
                 <label class="block text-sm font-semibold text-gray-800 mb-2">Tipe Transaksi</label>
-                <input type="hidden" name="type" id="type" value="{{ old('type', $transaction->type ?? 'out') }}">
                 
                 <nav class="flex gap-x-1 p-1 bg-gray-100 rounded-xl" aria-label="Tabs" role="tablist" aria-orientation="horizontal">
                     <!-- Tab Pemasukan (Hijau) -->
-                    <button type="button" data-val="in" class="btn-type py-2.5 px-4 inline-flex basis-0 grow justify-center items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 hover:text-gray-700 rounded-lg disabled:opacity-50 disabled:pointer-events-none hs-tab-active:bg-green-600 hs-tab-active:text-white hs-tab-active:shadow-sm active" id="segment-item-in" data-hs-tab="#segment-in" aria-controls="segment-in" role="tab" aria-selected="true">
+                    <button type="button" data-val="in" class="btn-type py-2.5 px-4 inline-flex basis-0 grow justify-center items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 hover:text-gray-700 rounded-lg disabled:opacity-50 disabled:pointer-events-none hs-tab-active:bg-green-600 hs-tab-active:text-white hs-tab-active:shadow-sm active" id="tab-item-pemasukan" data-hs-tab="#tab-pemasukan" aria-controls="tab-pemasukan" role="tab" aria-selected="true">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
                         Pemasukan
                     </button>
 
                     <!-- Tab Pengeluaran (Merah) -->
-                    <button type="button" data-val="out" class="btn-type py-2.5 px-4 inline-flex basis-0 grow justify-center items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 hover:text-gray-700 rounded-lg disabled:opacity-50 disabled:pointer-events-none hs-tab-active:bg-red-600 hs-tab-active:text-white hs-tab-active:shadow-sm" id="segment-item-out" data-hs-tab="#segment-out" aria-controls="segment-out" role="tab" aria-selected="false">
+                    <button type="button" data-val="out" class="btn-type py-2.5 px-4 inline-flex basis-0 grow justify-center items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 hover:text-gray-700 rounded-lg disabled:opacity-50 disabled:pointer-events-none hs-tab-active:bg-red-600 hs-tab-active:text-white hs-tab-active:shadow-sm" id="tab-item-pengeluaran" data-hs-tab="#tab-pengeluaran" aria-controls="tab-pengeluaran" role="tab" aria-selected="false">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7 7v18"></path></svg>
                         Pengeluaran
                     </button>
 
                     <!-- Tab Mutasi (Biru) -->
-                    <button type="button" data-val="transfer" class="btn-type py-2.5 px-4 inline-flex basis-0 grow justify-center items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 hover:text-gray-700 rounded-lg disabled:opacity-50 disabled:pointer-events-none hs-tab-active:bg-blue-600 hs-tab-active:text-white hs-tab-active:shadow-sm" id="segment-item-transfer" data-hs-tab="#segment-transfer" aria-controls="segment-transfer" role="tab" aria-selected="false">
+                    <button type="button" data-val="transfer" class="btn-type py-2.5 px-4 inline-flex basis-0 grow justify-center items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 hover:text-gray-700 rounded-lg disabled:opacity-50 disabled:pointer-events-none hs-tab-active:bg-blue-600 hs-tab-active:text-white hs-tab-active:shadow-sm" id="tab-item-mutasi" data-hs-tab="#tab-mutasi" aria-controls="tab-mutasi" role="tab" aria-selected="false">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
                         Mutasi
                     </button>
                 </nav>
 
-                <!-- Hidden Tab Content for Preline Core -->
-                <div class="hidden">
-                    <div id="segment-in" role="tabpanel" aria-labelledby="segment-item-in"></div>
-                    <div id="segment-out" role="tabpanel" aria-labelledby="segment-item-out"></div>
-                    <div id="segment-transfer" role="tabpanel" aria-labelledby="segment-item-transfer"></div>
+                <!-- Tab Panel HANYA untuk menampung hidden input tipe -->
+                <div class="mt-0">
+                  <div id="tab-pemasukan" role="tabpanel" aria-labelledby="tab-item-pemasukan">
+                      <input type="hidden" name="type" value="in" class="tipe_transaksi_input" {{ old('type', $transaction->type ?? 'out') == 'in' ? '' : 'disabled' }}>
+                  </div>
+                  <div id="tab-pengeluaran" class="hidden" role="tabpanel" aria-labelledby="tab-item-pengeluaran">
+                      <input type="hidden" name="type" value="out" class="tipe_transaksi_input" {{ old('type', $transaction->type ?? 'out') == 'out' ? '' : 'disabled' }}>
+                  </div>
+                  <div id="tab-mutasi" class="hidden" role="tabpanel" aria-labelledby="tab-item-mutasi">
+                      <input type="hidden" name="type" value="transfer" class="tipe_transaksi_input" {{ old('type', $transaction->type ?? 'out') == 'transfer' ? '' : 'disabled' }}>
+                  </div>
                 </div>
             </div>
 
@@ -250,7 +255,7 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const typeInput = document.getElementById('type');
+        const typeInputs = document.querySelectorAll('.tipe_transaksi_input');
         const btnTypes = document.querySelectorAll('.btn-type');
         const categorySelect = document.getElementById('category_id');
         const categoryOptions = categorySelect.querySelectorAll('option[data-type]');
@@ -302,6 +307,11 @@
                 }
             });
 
+            // Update type hidden inputs state
+            typeInputs.forEach(input => {
+                input.disabled = (input.value !== val);
+            });
+
             // Update visible fields
             if (val === 'transfer') {
                 wrapperDestAccount.classList.remove('hidden');
@@ -346,13 +356,14 @@
         btnTypes.forEach(btn => {
             btn.addEventListener('click', function() {
                 const val = this.getAttribute('data-val');
-                typeInput.value = val;
                 updateTypeUI(val);
             });
         });
 
         // Initialize Type UI
-        updateTypeUI(typeInput.value);
+        const activeTypeInput = Array.from(typeInputs).find(input => !input.disabled);
+        const initialType = activeTypeInput ? activeTypeInput.value : 'out';
+        updateTypeUI(initialType);
         if(amountDisplay.value) {
             amountDisplay.value = formatNumber(amountDisplay.value);
         }

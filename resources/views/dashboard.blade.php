@@ -161,190 +161,206 @@
 
     </div>
 
-    <!-- Tabel Riwayat Transaksi -->
+    <!-- Tabel Riwayat Transaksi (Datatables Preline) -->
     <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-200 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-            <h2 class="text-lg font-bold text-gray-800 whitespace-nowrap">Rincian Riwayat Transaksi</h2>
-            <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-                <div class="relative">
-                    <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5">
-                        <svg class="shrink-0 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                    </div>
-                    <input type="text" id="searchInput" placeholder="Cari catatan..." class="py-2 ps-10 pe-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm">
-                </div>
-                <select id="categoryFilter" data-hs-select='{
-                    "placeholder": "Semua Kategori",
-                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
-                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-3 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
-                    "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto",
-                    "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
-                    "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
-                }' class="hidden">
-                    <option value="">Semua Kategori</option>
-                    @foreach($categories as $cat)
-                        <option value="{{ $cat->name }}">{{ $cat->name }}</option>
-                    @endforeach
-                </select>
-                <form id="formTimeFilter" action="{{ route('dashboard') }}" method="GET" class="flex flex-col sm:flex-row gap-2 items-center">
-                    <select name="time_mode" id="time_mode" data-hs-select='{
-                        "placeholder": "Pilih Waktu",
-                        "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
-                        "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-3 pe-9 flex gap-x-2 text-nowrap w-full sm:w-auto cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
-                        "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto",
-                        "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
-                        "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
-                    }' class="hidden" onchange="toggleTimeInputs()">
-                        <option value="all" {{ request('time_mode') == 'all' ? 'selected' : '' }}>Semua Waktu</option>
-                        <option value="daily" {{ request('time_mode') == 'daily' ? 'selected' : '' }}>Harian Spesifik</option>
-                        <option value="monthly" {{ request('time_mode') == 'monthly' ? 'selected' : '' }}>Bulanan Spesifik</option>
-                        <option value="yearly" {{ request('time_mode') == 'yearly' ? 'selected' : '' }}>Tahunan Spesifik</option>
-                    </select>
-                    
-                    <input type="date" name="date_val" id="input_daily" class="hidden py-2 px-3 block w-full sm:w-auto border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm" value="{{ request('date_val', \Carbon\Carbon::today()->format('Y-m-d')) }}">
-                    <input type="month" name="month_val" id="input_monthly" class="hidden py-2 px-3 block w-full sm:w-auto border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm" value="{{ request('month_val', \Carbon\Carbon::today()->format('Y-m')) }}">
-                    <input type="number" name="year_val" id="input_yearly" class="hidden py-2 px-3 block w-full sm:w-auto border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm" value="{{ request('year_val', \Carbon\Carbon::today()->format('Y')) }}" placeholder="Contoh: 2026">
-                    
-                    <button type="submit" class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-lg border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm">
-                        Filter
-                    </button>
-                </form>
-            </div>
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-bold text-gray-800">Rincian Riwayat Transaksi</h2>
         </div>
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200" id="transactionTable">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th scope="col" class="px-6 py-3 text-start text-xs font-semibold text-gray-500 uppercase">Tanggal</th>
-                        <th scope="col" class="px-6 py-3 text-start text-xs font-semibold text-gray-500 uppercase">Jenis</th>
-                        <th scope="col" class="px-6 py-3 text-start text-xs font-semibold text-gray-500 uppercase">Kategori</th>
-                        <th scope="col" class="px-6 py-3 text-start text-xs font-semibold text-gray-500 uppercase">Rekening</th>
-                        <th scope="col" class="px-6 py-3 text-end text-xs font-semibold text-gray-500 uppercase">Nominal</th>
-                        <th scope="col" class="px-6 py-3 text-start text-xs font-semibold text-gray-500 uppercase">Catatan</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200">
-                    @foreach($transactions as $trx)
-                    <tr class="trx-row hover:bg-gray-50 transition" data-date="{{ $trx->date->format('Y-m-d') }}" data-type="{{ $trx->type }}" data-category="{{ $trx->category ? $trx->category->name : '' }}" data-amount="{{ $trx->amount }}">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $trx->date->format('d/m/Y') }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm">
-                            @if($trx->type == 'in') <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-md text-xs font-medium bg-green-100 text-green-700">Pemasukan</span>
-                            @elseif($trx->type == 'out') <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-md text-xs font-medium bg-red-100 text-red-700">Pengeluaran</span>
-                            @else <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-md text-xs font-medium bg-blue-100 text-blue-700">Mutasi</span>
-                            @endif
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $trx->category ? $trx->category->name : '-' }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                            {{ $trx->sourceAccount ? $trx->sourceAccount->name : '-' }}
-                            @if($trx->type == 'transfer' && $trx->destinationAccount)
-                                <span class="text-gray-400 mx-1">➔</span> {{ $trx->destinationAccount->name }}
-                            @endif
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-end font-bold text-gray-900">Rp {{ number_format($trx->amount, 0, ',', '.') }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-800 search-target">
-                            {{ $trx->description ?? '-' }}
-                            @if($trx->details && $trx->details->count() > 0)
-                                <ul class="list-disc pl-4 text-[11px] text-gray-500 mt-1">
-                                    @foreach($trx->details as $item)
-                                        <li>{{ $item->name }} ({{ $item->qty ?? 1 }}x) - Rp{{ number_format($item->price, 0, ',', '.') }}</li>
-                                    @endforeach
-                                </ul>
-                            @endif
-                            @if($trx->discount && $trx->discount > 0)
-                                <div class="text-[11px] text-orange-600 mt-1 font-semibold">
-                                    Diskon Global: Rp {{ number_format($trx->discount, 0, ',', '.') }}
-                                </div>
-                            @endif
-                            <div class="mt-2 flex items-center gap-3">
-                                <a href="{{ route('transactions.edit', $trx->id) }}" class="text-blue-600 hover:underline text-xs font-medium">Edit</a>
-                                <form action="{{ route('transactions.destroy', $trx->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus transaksi ini?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:underline text-xs font-medium">Hapus</button>
-                                </form>
-                                <div class="hs-tooltip inline-block relative group cursor-pointer ml-1">
-                                    <div class="hs-tooltip-toggle flex items-center justify-center text-gray-400 hover:text-blue-600 transition-colors">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                            <path d="M12 16v-4"></path>
-                                            <path d="M12 8h.01"></path>
-                                        </svg>
-                                        <div class="hs-tooltip-content opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm whitespace-nowrap bottom-full mb-2 left-1/2 -translate-x-1/2 group-hover:opacity-100 group-hover:visible" role="tooltip">
-                                            Tujuan/Sumber: {{ $trx->related_party ?? 'Tidak ada data' }}<br/>
-                                            Peruntukan: {{ $trx->allocation ?? '-' }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-                <tfoot class="bg-gray-50 border-t border-gray-200">
-                    <tr>
-                        <td colspan="4" class="px-6 py-4 whitespace-nowrap text-end text-sm font-bold text-gray-800 uppercase tracking-wider">Summary:</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-bold text-gray-900">
-                            <div class="flex flex-col items-end gap-1">
-                                <span class="text-green-600">In: Rp <span id="filteredIn">0</span></span>
-                                <span class="text-red-600">Out: Rp <span id="filteredOut">0</span></span>
-                            </div>
-                        </td>
-                        <td></td>
-                    </tr>
-                </tfoot>
+        <div id="hs-datatable-transaksi" class="flex flex-col --prevent-on-load-init p-6" data-hs-datatable='{
+          "pagingOptions": {
+            "pageBtnClasses": "min-w-10 flex justify-center items-center text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 py-2.5 text-sm rounded-full disabled:opacity-50 disabled:pointer-events-none"
+          },
+          "ordering": false,
+          "selecting": true,
+          "rowSelectingOptions": {
+            "selectAllSelector": "#hs-datatable-select-all-rows",
+            "individualSelector": ".hs-datatable-select-row"
+          },
+          "language": {
+            "zeroRecords": "<div class=\"py-10 px-5 flex flex-col justify-center items-center text-center\"><svg class=\"shrink-0 size-6 text-gray-400\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/></svg><div class=\"max-w-sm mx-auto\"><p class=\"mt-2 text-sm text-gray-500\">Tidak ada data ditemukan</p></div></div>"
+          }
+        }'>
+          
+          <!-- Header (Pencarian & Baris per Halaman) -->
+          <div class="flex flex-wrap items-center gap-2 mb-4">
+            <div class="grow flex flex-col md:flex-row items-center gap-2">
+              <div class="relative max-w-xs w-full">
+                <label for="hs-table-search" class="sr-only">Cari</label>
+                <input type="text" id="hs-table-search" class="py-1.5 sm:py-2 px-3 ps-9 block w-full bg-white border-gray-200 shadow-sm rounded-lg sm:text-sm text-gray-800 placeholder:text-gray-400 focus:z-10 focus:border-blue-500 focus:ring-blue-500" placeholder="Cari transaksi..." data-hs-datatable-search>
+                <div class="absolute inset-y-0 inset-s-0 flex items-center pointer-events-none ps-3">
+                  <svg class="size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                </div>
+              </div>
+              
+              <!-- Filter Rentang Tanggal -->
+              <div class="flex items-center gap-2 w-full md:w-auto">
+                <input type="date" id="filter-start-date" class="py-1.5 sm:py-2 px-3 block w-full md:w-36 bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 text-gray-700" title="Dari Tanggal">
+                <span class="text-sm text-gray-500">s/d</span>
+                <input type="date" id="filter-end-date" class="py-1.5 sm:py-2 px-3 block w-full md:w-36 bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 text-gray-700" title="Sampai Tanggal">
+              </div>
+            </div>
+            <div class="flex-1 flex items-center justify-end space-x-2">
+              <select class="hidden" data-hs-select='{
+                "toggleClasses": "relative py-2 px-3 pe-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50",
+                "dropdownClasses": "mt-2 inset-e-0 z-[100] w-20 max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden overflow-y-auto",
+                "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-md focus:outline-none focus:bg-gray-100"
+              }' data-hs-datatable-page-entities>
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Tabel -->
+          <div class="min-h-[300px] overflow-x-auto">
+            <table class="min-w-full">
+              <thead class="border-b border-gray-200 bg-gray-50">
+                <tr>
+                  <th scope="col" class="py-3 ps-4 --exclude-from-ordering">
+                    <div class="flex items-center h-5">
+                      <input id="hs-datatable-select-all-rows" type="checkbox" class="shrink-0 size-4 text-blue-600 border-gray-300 rounded focus:ring-blue-600">
+                    </div>
+                  </th>
+                  <th scope="col" class="py-3 px-4 text-start font-medium text-sm text-gray-500">Tanggal</th>
+                  
+                  <!-- Kolom Tipe dengan Filter -->
+                  <th scope="col" class="py-3 px-4 text-start font-medium text-sm text-gray-500 --exclude-from-ordering">
+                    <div class="inline-block">
+                      <select id="hs-select-tipe" class="hidden" data-hs-select='{
+                        "toggleClasses": "group relative py-1 px-2 pe-9 inline-flex text-nowrap w-full cursor-pointer rounded-lg text-start text-sm text-gray-500 font-medium hover:bg-gray-200 focus:outline-none",
+                        "dropdownClasses": "mt-2 z-[100] w-full min-w-[150px] max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-md",
+                        "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg"
+                      }'>
+                        <option value="all" selected>Tipe (Semua)</option>
+                        <option value="Pemasukan">Pemasukan</option>
+                        <option value="Pengeluaran">Pengeluaran</option>
+                        <option value="Mutasi">Mutasi</option>
+                      </select>
+                    </div>
+                  </th>
+                  
+                  <th scope="col" class="py-3 px-4 text-start font-medium text-sm text-gray-500">Kategori</th>
+                  <th scope="col" class="py-3 px-4 text-end font-medium text-sm text-gray-500">Nominal</th>
+                  <th scope="col" class="py-3 px-4 text-start font-medium text-sm text-gray-500">Keterangan</th>
+                  <th scope="col" class="py-3 px-4 text-center font-medium text-sm text-gray-500 --exclude-from-ordering">Aksi</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                @foreach($transactions as $trx)
+                <tr class="hover:bg-gray-50">
+                  <td class="py-3 ps-4">
+                    <div class="flex items-center h-5">
+                      <input type="checkbox" class="hs-datatable-select-row shrink-0 size-4 text-blue-600 border-gray-300 rounded focus:ring-blue-600" data-hs-datatable-row-selecting-individual>
+                    </div>
+                  </td>
+                  <td class="p-4 whitespace-nowrap text-sm text-gray-800">{{ $trx->date->format('d/m/Y') }}</td>
+                  <td class="p-4 whitespace-nowrap text-sm text-gray-800">
+                        @if($trx->type == 'in') <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-md text-xs font-medium bg-green-100 text-green-700">Pemasukan</span>
+                        @elseif($trx->type == 'out') <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-md text-xs font-medium bg-red-100 text-red-700">Pengeluaran</span>
+                        @else <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-md text-xs font-medium bg-blue-100 text-blue-700">Mutasi</span>
+                        @endif
+                  </td>
+                  <td class="p-4 whitespace-nowrap text-sm text-gray-800">{{ $trx->category ? $trx->category->name : '-' }}</td>
+                  <td class="p-4 whitespace-nowrap text-end text-sm font-bold text-gray-900">Rp {{ number_format($trx->amount, 0, ',', '.') }}</td>
+                  <td class="p-4 text-sm text-gray-800">
+                    <div class="hs-popover inline-block [--trigger:hover] [--placement:top] [--strategy:absolute]">
+                      <a class="hs-popover-toggle text-sm font-semibold text-gray-800 hover:text-blue-600 cursor-help border-b border-dashed border-gray-400">
+                        {{ Str::limit($trx->description ?? 'Tanpa Keterangan', 30) }}
+                      </a>
+                      <div class="hs-popover-content opacity-0 transition-opacity hidden z-[100] w-72 bg-white border border-gray-200 rounded-lg shadow-xl" role="tooltip">
+                        <div class="p-3 text-sm text-gray-700 whitespace-pre-wrap">
+                          <div class="font-semibold">{{ $trx->description ?? 'Tanpa Keterangan' }}</div>
+                          @if($trx->details && $trx->details->count() > 0)
+                              <ul class="list-disc pl-4 text-xs text-gray-500 mt-2 space-y-1">
+                                  @foreach($trx->details as $item)
+                                      <li>{{ $item->name }} ({{ $item->qty ?? 1 }}x) - Rp{{ number_format($item->price, 0, ',', '.') }}</li>
+                                  @endforeach
+                              </ul>
+                          @endif
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-4 whitespace-nowrap text-center text-sm font-medium">
+                      <a href="{{ route('transactions.edit', $trx->id) }}" class="text-blue-600 hover:underline text-xs font-medium mr-2">Edit</a>
+                      <form action="{{ route('transactions.destroy', $trx->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus transaksi ini?');">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="text-red-600 hover:underline text-xs font-medium">Hapus</button>
+                      </form>
+                  </td>
+                </tr>
+                @endforeach
+              </tbody>
             </table>
+          </div>
+
+          <!-- Footer (Paginasi) -->
+          <div class="flex flex-wrap justify-between items-center gap-2 mt-4 px-4 pb-4">
+            <div class="inline-flex items-center gap-1 hidden" data-hs-datatable-paging>
+              <button type="button" class="p-2.5 min-w-10 inline-flex justify-center items-center gap-x-2 text-sm rounded-full text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50" data-hs-datatable-paging-prev>
+                <span aria-hidden="true">«</span>
+              </button>
+              <div class="flex items-center space-x-1 [&>.active]:bg-gray-200 [&>.active]:font-bold" data-hs-datatable-paging-pages></div>
+              <button type="button" class="p-2.5 min-w-10 inline-flex justify-center items-center gap-x-2 text-sm rounded-full text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50" data-hs-datatable-paging-next>
+                <span aria-hidden="true">»</span>
+              </button>
+            </div>
+            <div class="whitespace-nowrap text-sm text-gray-500" data-hs-datatable-info>
+              Menampilkan <span data-hs-datatable-info-from></span> hingga <span data-hs-datatable-info-to></span> dari <span data-hs-datatable-info-length></span> data
+            </div>
+          </div>
         </div>
     </div>
-</div>
 @endsection
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('searchInput');
-        const categoryFilter = document.getElementById('categoryFilter');
-        const rows = document.querySelectorAll('.trx-row');
-        const filteredInEl = document.getElementById('filteredIn');
-        const filteredOutEl = document.getElementById('filteredOut');
+  window.addEventListener('load', () => {
+    (function () {
+      // Ambil elemen dropdown filter Tipe Transaksi
+      const tipeEl = document.querySelector('#hs-select-tipe');
+      
+      // Inisialisasi DataTable Preline
+      const { dataTable } = new HSDataTable('#hs-datatable-transaksi');
+      
+      // Buat aturan pencarian custom
+      dataTable.search.fixed('range', function (searchStr, data, index) {
+        const filterTipe = tipeEl.value === 'all' ? '' : tipeEl.value;
+        const tipeTransaksi = data[2] || '';
+        
+        // Logika Tipe
+        let matchTipe = (filterTipe === tipeTransaksi || filterTipe === '');
 
-        function formatRupiah(number) {
-            return new Intl.NumberFormat('id-ID').format(number);
-        }
+        // Logika Tanggal
+        const startInput = document.querySelector('#filter-start-date').value;
+        const endInput = document.querySelector('#filter-end-date').value;
+        
+        let start = startInput ? new Date(startInput) : null;
+        let end = endInput ? new Date(endInput) : null;
+        if(end) end.setHours(23, 59, 59, 999);
 
-        function filterTable() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const category = categoryFilter.value;
-            
-            let totalIn = 0;
-            let totalOut = 0;
+        const rowDateStr = data[1] || ''; // Kolom indeks 1 = Tanggal
+        const parts = rowDateStr.split('/');
+        let rowDate = null;
+        if(parts.length === 3) rowDate = new Date(parts[2], parts[1]-1, parts[0]);
 
-            rows.forEach(row => {
-                const text = row.querySelector('.search-target').textContent.toLowerCase();
-                const rowCat = row.getAttribute('data-category');
-                const rowType = row.getAttribute('data-type');
-                const rowAmount = parseFloat(row.getAttribute('data-amount'));
+        let matchDate = true;
+        if (start && rowDate && rowDate < start) matchDate = false;
+        if (end && rowDate && rowDate > end) matchDate = false;
 
-                let matchSearch = text.includes(searchTerm);
-                let matchCat = category === "" || rowCat === category;
+        return matchTipe && matchDate;
+      });
 
-                if (matchSearch && matchCat) {
-                    row.style.display = '';
-                    if (rowType === 'in') totalIn += rowAmount;
-                    if (rowType === 'out') totalOut += rowAmount;
-                } else {
-                    row.style.display = 'none';
-                }
-            });
+      // Jika dropdown tipe diubah, gambar ulang tabelnya
+      tipeEl.addEventListener('change', () => dataTable.draw());
 
-            filteredInEl.textContent = formatRupiah(totalIn);
-            filteredOutEl.textContent = formatRupiah(totalOut);
-        }
-
-        searchInput.addEventListener('input', filterTable);
-        categoryFilter.addEventListener('change', filterTable);
-
-        // Initial calc
-        filterTable();
-    });
+      // Tambahkan event listener untuk input tanggal
+      document.querySelector('#filter-start-date').addEventListener('change', () => dataTable.draw());
+      document.querySelector('#filter-end-date').addEventListener('change', () => dataTable.draw());
+    })();
+  });
 
     // Toggle time inputs on change
     function toggleTimeInputs() {

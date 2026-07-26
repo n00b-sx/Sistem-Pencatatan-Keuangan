@@ -89,13 +89,13 @@
                   "searchClasses": "block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 py-2 px-3",
                   "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 z-10",
                   "placeholder": "Pilih rekening...",
-                  "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                  "toggleTag": "<button type=\'button\' aria-expanded=\'false\'></button>",
                   "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 pl-4 pr-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-lg text-left text-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50",
                   "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
                   "optionClasses": "hs-selected:bg-blue-50 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50",
-                  "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
-                  "extraMarkup": "<div class=\"absolute top-1/2 -translate-y-1/2\" style=\"right: 0.75rem;\"><svg class=\"shrink-0 size-3.5 text-gray-400\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-                }' class="hidden" required>
+                  "optionTemplate": "<div class=\'flex justify-between items-center w-full\'><span data-title></span><span class=\'hidden hs-selected:block\'><svg class=\'shrink-0 size-3.5 text-blue-600\' xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><polyline points=\'20 6 9 17 4 12\'/></svg></span></div>",
+                  "extraMarkup": "<div class=\'absolute top-1/2 -translate-y-1/2\' style=\'right: 0.75rem;\'><svg class=\'shrink-0 size-3.5 text-gray-400\' xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><path d=\'m7 15 5 5 5-5\'/><path d=\'m7 9 5-5 5 5\'/></svg></div>"
+                }' required>
                     <option value="">Pilih Rekening</option>
                     @foreach($accounts as $acc)
                         <option value="{{ $acc->id }}" data-icon="{{ $acc->logo ? asset('storage/' . $acc->logo) : asset('images/logos/wallet.png') }}" {{ old('source_account_id', $transaction->source_account_id ?? '') == $acc->id ? 'selected' : '' }}>{{ $acc->name }}</option>
@@ -117,7 +117,7 @@
                   "optionClasses": "hs-selected:bg-blue-50 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50",
                   "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
                   "extraMarkup": "<div class=\"absolute top-1/2 -translate-y-1/2\" style=\"right: 0.75rem;\"><svg class=\"shrink-0 size-3.5 text-gray-400\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-                }' class="hidden">
+                }'>
                     <option value="">Pilih Rekening Tujuan</option>
                     @foreach($accounts as $acc)
                         <option value="{{ $acc->id }}" data-icon="{{ $acc->logo ? asset('storage/' . $acc->logo) : asset('images/logos/wallet.png') }}" {{ old('destination_account_id', $transaction->destination_account_id ?? '') == $acc->id ? 'selected' : '' }}>{{ $acc->name }}</option>
@@ -133,13 +133,13 @@
                   "searchClasses": "block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 py-2 px-3",
                   "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 z-10",
                   "placeholder": "Pilih kategori...",
-                  "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                  "toggleTag": "<button type=\'button\' aria-expanded=\'false\'></button>",
                   "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 pl-4 pr-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-lg text-left text-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50",
                   "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
                   "optionClasses": "hs-selected:bg-blue-50 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50",
-                  "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
-                  "extraMarkup": "<div class=\"absolute top-1/2 -translate-y-1/2\" style=\"right: 0.75rem;\"><svg class=\"shrink-0 size-3.5 text-gray-400\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-                }' class="hidden">
+                  "optionTemplate": "<div class=\'flex justify-between items-center w-full\'><span data-title></span><span class=\'hidden hs-selected:block\'><svg class=\'shrink-0 size-3.5 text-blue-600\' xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><polyline points=\'20 6 9 17 4 12\'/></svg></span></div>",
+                  "extraMarkup": "<div class=\'absolute top-1/2 -translate-y-1/2\' style=\'right: 0.75rem;\'><svg class=\'shrink-0 size-3.5 text-gray-400\' xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><path d=\'m7 15 5 5 5-5\'/><path d=\'m7 9 5-5 5 5\'/></svg></div>"
+                }'>
                     <option value="">Pilih Kategori</option>
                     @foreach($categories as $cat)
                         <option value="{{ $cat->id }}" data-icon="{{ $cat->icon ?? '📁' }}" data-type="{{ $cat->type }}" {{ old('category_id', $transaction->category_id ?? '') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
@@ -161,7 +161,7 @@
                   "optionClasses": "hs-selected:bg-blue-50 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50",
                   "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
                   "extraMarkup": "<div class=\"absolute top-1/2 -translate-y-1/2\" style=\"right: 0.75rem;\"><svg class=\"shrink-0 size-3.5 text-gray-400\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
-                }' class="hidden">
+                }'>
                     @php $allocs = ['Pribadi', 'Istri', 'Bersama', 'Kantor']; @endphp
                     @foreach($allocs as $alloc)
                         <option value="{{ $alloc }}" {{ old('allocation', $transaction->allocation ?? 'Pribadi') == $alloc ? 'selected' : '' }}>{{ $alloc }}</option>
@@ -394,13 +394,18 @@
                 const newSelect = document.createElement('select');
                 newSelect.id = 'category_id';
                 newSelect.name = 'category_id';
-                newSelect.className = 'hidden';
                 newSelect.setAttribute('data-hs-select', selectConfig);
                 newSelect.innerHTML = optionsHtml;
                 wrapperCategory.appendChild(newSelect);
                 
                 if (window.HSStaticMethods && typeof window.HSStaticMethods.autoInit === 'function') {
-                    window.HSStaticMethods.autoInit(['select']);
+                    console.log("Auto-initializing Preline dynamically!");
+                    window.HSStaticMethods.autoInit();
+                    if (!window.HSSelect) {
+                        alert("Preline HSSelect is not loaded! Please check console.");
+                    }
+                } else {
+                    alert("Preline HSStaticMethods not found!");
                 }
             }
         }
@@ -412,10 +417,13 @@
             });
         });
 
-        // Initialize Type UI
-        const activeTypeInput = Array.from(typeInputs).find(input => !input.disabled);
-        const initialType = activeTypeInput ? activeTypeInput.value : 'out';
-        updateTypeUI(initialType);
+        // Initialize Type UI after page and modules load
+        window.addEventListener('load', function() {
+            const activeTypeInput = Array.from(typeInputs).find(input => !input.disabled);
+            const initialType = activeTypeInput ? activeTypeInput.value : 'out';
+            updateTypeUI(initialType);
+        });
+
         if(amountDisplay.value) {
             amountDisplay.value = formatNumber(amountDisplay.value);
         }

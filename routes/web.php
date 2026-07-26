@@ -5,6 +5,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ReportController;
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login')->middleware('guest');
 Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
@@ -27,4 +28,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
     Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+    Route::get('/laporan', [ReportController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan/ekspor-pdf', [ReportController::class, 'exportPdf'])->name('laporan.pdf');
 });

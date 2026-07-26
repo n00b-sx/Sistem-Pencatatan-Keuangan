@@ -266,6 +266,7 @@
 
 @push('scripts')
 <script>
+    window.allCategoriesData = @json($categories);
     document.addEventListener('DOMContentLoaded', function() {
         const typeInputs = document.querySelectorAll('.tipe_transaksi_input');
         const btnTypes = document.querySelectorAll('.btn-type');
@@ -347,20 +348,59 @@
                 }
 
                 // Filter Categories based on data-type
-                let categoryHasValidSelection = false;
-                categoryOptions.forEach(opt => {
-                    if (opt.getAttribute('data-type') === val) {
-                        opt.style.display = '';
-                        if (opt.selected) categoryHasValidSelection = true;
-                    } else {
-                        opt.style.display = 'none';
-                        if (opt.selected) opt.selected = false;
-                    }
-                });
+                const wrapperCategory = document.getElementById('wrapper_category');
+                const oldSelect = document.getElementById('category_id');
+                const currentVal = oldSelect ? oldSelect.value : "";
                 
-                // If the selected category was hidden, reset selection
-                if (!categoryHasValidSelection && categorySelect.value !== "") {
-                    categorySelect.value = "";
+                // Destroy existing instance if it exists
+                if (window.HSSelect && oldSelect) {
+                    const instance = window.HSSelect.getInstance(oldSelect);
+                    if (instance) {
+                        instance.destroy();
+                    }
+                }
+                
+                let optionsHtml = '<option value="">Pilih Kategori</option>';
+                let hasValidSelection = false;
+                
+                if (window.allCategoriesData) {
+                    window.allCategoriesData.forEach(cat => {
+                        if (cat.type === val) {
+                            const selected = (currentVal == cat.id) ? 'selected' : '';
+                            if (selected) hasValidSelection = true;
+                            optionsHtml += `<option value="${cat.id}" data-icon="${cat.icon || '📁'}" data-type="${cat.type}" ${selected}>${cat.name}</option>`;
+                        }
+                    });
+                }
+                
+                const selectConfig = `{
+                  "hasSearch": true,
+                  "searchPlaceholder": "Cari kategori...",
+                  "searchClasses": "block w-full text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 py-2 px-3",
+                  "searchWrapperClasses": "bg-white p-2 -mx-1 sticky top-0 z-10",
+                  "placeholder": "Pilih kategori...",
+                  "toggleTag": "<button type='button' aria-expanded='false'></button>",
+                  "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 pl-4 pr-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-lg text-left text-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50",
+                  "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300",
+                  "optionClasses": "hs-selected:bg-blue-50 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50",
+                  "optionTemplate": "<div class='flex justify-between items-center w-full'><span data-title></span><span class='hidden hs-selected:block'><svg class='shrink-0 size-3.5 text-blue-600' xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg></span></div>",
+                  "extraMarkup": "<div class='absolute top-1/2 -translate-y-1/2' style='right: 0.75rem;'><svg class='shrink-0 size-3.5 text-gray-400' xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m7 15 5 5 5-5'/><path d='m7 9 5-5 5 5'/></svg></div>"
+                }`;
+                
+                const label = wrapperCategory.querySelector('label');
+                wrapperCategory.innerHTML = '';
+                if (label) wrapperCategory.appendChild(label);
+                
+                const newSelect = document.createElement('select');
+                newSelect.id = 'category_id';
+                newSelect.name = 'category_id';
+                newSelect.className = 'hidden';
+                newSelect.setAttribute('data-hs-select', selectConfig);
+                newSelect.innerHTML = optionsHtml;
+                wrapperCategory.appendChild(newSelect);
+                
+                if (window.HSStaticMethods && typeof window.HSStaticMethods.autoInit === 'function') {
+                    window.HSStaticMethods.autoInit(['select']);
                 }
             }
         }

@@ -183,6 +183,7 @@
                                 "dropdownClasses": "mt-2 z-[100] w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden overflow-y-auto",
                                 "optionClasses": "hs-selected:bg-blue-50 hs-selected:text-blue-600 py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100"
                             }' class="hidden" required>
+                                <option value="">Pilih Tipe</option>
                                 <option value="out">Pengeluaran</option>
                                 <option value="in">Pemasukan</option>
                             </select>
@@ -358,6 +359,20 @@
         categoryIcon.value = icon;
         categoryType.value = type;
         
+        if (window.HSSelect) {
+            let instance = window.HSSelect.getInstance(categoryType);
+            if (!instance && window.HSStaticMethods && typeof window.HSStaticMethods.autoInit === 'function') {
+                window.HSStaticMethods.autoInit(['select']);
+                instance = window.HSSelect.getInstance(categoryType);
+            }
+            if (instance) {
+                instance.value = type; // Attempt to set value for preline v2.x
+            }
+            
+            // Also trigger change just in case
+            categoryType.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        
         // Scroll to form smoothly
         categoryFormTitle.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
@@ -372,6 +387,13 @@
         categoryForm.action = categoryActionBase; // Back to /categories
         
         categoryForm.reset();
+        
+        if (window.HSSelect) {
+            let instance = window.HSSelect.getInstance(categoryType);
+            if (instance) {
+                instance.value = ""; 
+            }
+        }
     }
 </script>
 @endpush

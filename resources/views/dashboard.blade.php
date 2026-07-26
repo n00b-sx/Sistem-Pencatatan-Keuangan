@@ -322,38 +322,38 @@
                       <div class="hs-tooltip group [--placement:left] inline-block shrink-0 mt-0.5 relative">
                         <button type="button" class="hs-tooltip-toggle text-gray-400 hover:text-blue-600 focus:outline-none transition-colors cursor-help inline-flex justify-center items-center">
                           <svg class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-                          <span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible group-hover:opacity-100 group-hover:visible z-[100] py-1 px-2 bg-gray-900 border border-gray-700 text-xs font-medium text-white rounded-md shadow-2xl text-left right-full mr-2" role="tooltip">
-                            <span class="block w-60 p-2 space-y-2 cursor-default font-normal">
-                              <span class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1 border-b border-gray-700 pb-1">Info Tambahan</span>
-                              
-                              @if($trx->type == 'out')
-                              <span class="grid grid-cols-3 gap-1 text-xs">
-                                <span class="text-gray-400">Tujuan</span>
-                                <span class="col-span-2 font-medium">{{ $trx->related_party ?: '-' }}</span>
-                              </span>
-                              @elseif($trx->type == 'in')
-                              <span class="grid grid-cols-3 gap-1 text-xs">
-                                <span class="text-gray-400">Sumber</span>
-                                <span class="col-span-2 font-medium">{{ $trx->related_party ?: '-' }}</span>
-                              </span>
-                              @else
-                              <span class="grid grid-cols-3 gap-1 text-xs">
-                                <span class="text-gray-400">Sumber</span>
-                                <span class="col-span-2 font-medium">{{ $trx->sourceAccount ? $trx->sourceAccount->name : '-' }}</span>
-                              </span>
-                              <span class="grid grid-cols-3 gap-1 text-xs">
-                                <span class="text-gray-400">Tujuan</span>
-                                <span class="col-span-2 font-medium">{{ $trx->destinationAccount ? $trx->destinationAccount->name : '-' }}</span>
-                              </span>
-                              @endif
-                              
-                              <span class="grid grid-cols-3 gap-1 text-xs">
-                                <span class="text-gray-400">Peruntukan</span>
-                                <span class="col-span-2 font-medium">{{ $trx->allocation ?? '-' }}</span>
-                              </span>
+                        </button>
+                        <span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible group-hover:opacity-100 group-hover:visible z-[100] py-2 px-3 bg-gray-900 border border-gray-700 text-xs font-medium text-white rounded-xl shadow-2xl text-left right-full mr-2 w-60" role="tooltip">
+                          <span class="block space-y-2 cursor-default font-normal">
+                            <span class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1 border-b border-gray-700 pb-1">Info Tambahan</span>
+                            
+                            @if($trx->type == 'out')
+                            <span class="grid grid-cols-3 gap-1 text-xs">
+                              <span class="text-gray-400">Tujuan</span>
+                              <span class="col-span-2 font-medium">{{ $trx->related_party ?: '-' }}</span>
+                            </span>
+                            @elseif($trx->type == 'in')
+                            <span class="grid grid-cols-3 gap-1 text-xs">
+                              <span class="text-gray-400">Sumber</span>
+                              <span class="col-span-2 font-medium">{{ $trx->related_party ?: '-' }}</span>
+                            </span>
+                            @else
+                            <span class="grid grid-cols-3 gap-1 text-xs">
+                              <span class="text-gray-400">Sumber</span>
+                              <span class="col-span-2 font-medium">{{ $trx->sourceAccount ? $trx->sourceAccount->name : '-' }}</span>
+                            </span>
+                            <span class="grid grid-cols-3 gap-1 text-xs">
+                              <span class="text-gray-400">Tujuan</span>
+                              <span class="col-span-2 font-medium">{{ $trx->destinationAccount ? $trx->destinationAccount->name : '-' }}</span>
+                            </span>
+                            @endif
+                            
+                            <span class="grid grid-cols-3 gap-1 text-xs">
+                              <span class="text-gray-400">Peruntukan</span>
+                              <span class="col-span-2 font-medium">{{ $trx->allocation ?? '-' }}</span>
                             </span>
                           </span>
-                        </button>
+                        </span>
                       </div>
                     </div>
                   </td>

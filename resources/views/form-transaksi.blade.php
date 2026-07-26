@@ -249,11 +249,13 @@
 
 @push('scripts')
 <script>
+    const allCategories = @json($categories);
+    const oldCategoryId = "{{ old('category_id', $transaction->category_id ?? '') }}";
+    
     document.addEventListener('DOMContentLoaded', function() {
         const typeInput = document.getElementById('type');
         const btnTypes = document.querySelectorAll('.btn-type');
-        const categorySelect = document.getElementById('category_id');
-        const categoryOptions = categorySelect.querySelectorAll('option[data-type]');
+        let currentCategoryId = oldCategoryId;
         
         const wrapperDestAccount = document.getElementById('wrapper_dest_account');
         const wrapperCategory = document.getElementById('wrapper_category');
@@ -325,21 +327,52 @@
                 }
 
                 // Filter Categories based on data-type
+                const categorySelect = document.getElementById('category_id');
+                if (categorySelect) {
+                    currentCategoryId = categorySelect.value; // Store current value
+                }
+
+                // Completely rebuild the wrapper to destroy any ghost elements created by Preline
+                let optionsHtml = '<option value="">Pilih Kategori</option>';
                 let categoryHasValidSelection = false;
-                categoryOptions.forEach(opt => {
-                    if (opt.getAttribute('data-type') === val) {
-                        opt.style.display = '';
-                        if (opt.selected) categoryHasValidSelection = true;
-                    } else {
-                        opt.style.display = 'none';
-                        if (opt.selected) opt.selected = false;
+
+                allCategories.forEach(cat => {
+                    if (cat.type === val) {
+                        const isSelected = (cat.id == currentCategoryId) ? 'selected' : '';
+                        if (isSelected) categoryHasValidSelection = true;
+                        optionsHtml += `<option value="${cat.id}" data-icon="${cat.icon || '📁'}" data-type="${cat.type}" ${isSelected}>${cat.name}</option>`;
                     }
                 });
-                
-                // If the selected category was hidden, reset selection
-                if (!categoryHasValidSelection && categorySelect.value !== "") {
-                    categorySelect.value = "";
+
+                if (!categoryHasValidSelection) {
+                    currentCategoryId = '';
                 }
+
+                wrapperCategory.innerHTML = `
+                    <label for="category_id" class="block text-sm font-semibold text-gray-800 mb-2">Kategori</label>
+                    <select id="category_id" name="category_id" data-hs-select='{
+                        "placeholder": "Cari kategori...",
+                        "hasSearch": true,
+                        "searchPlaceholder": "Ketik kategori...",
+                        "searchWrapperClasses": "p-2 sticky top-0 bg-white z-10 border-b border-gray-100",
+                        "searchClasses": "py-2 px-3 block w-full bg-white border-gray-200 rounded-lg text-sm focus:border-sekunder focus:ring-sekunder",
+                        "toggleTag": "<button type=\\"button\\" aria-expanded=\\"false\\"></button>",
+                        "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 pl-4 pr-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-lg text-start text-sm hover:bg-gray-50 focus:outline-none focus:border-sekunder focus:ring-sekunder",
+                        "dropdownClasses": "mt-2 z-[100] w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden overflow-y-auto",
+                        "optionClasses": "hs-selected:bg-green-50 hs-selected:text-sekunder py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
+                        "optionTemplate": "<div class=\\"flex justify-between items-center w-full\\"><div class=\\"flex items-center w-full\\"><span class=\\"shrink-0 me-3 text-lg\\" data-icon></span><span data-title></span></div><span class=\\"hidden hs-selected:block\\"><svg class=\\"shrink-0 size-3.5 text-sekunder\\" xmlns=\\"http://www.w3.org/2000/svg\\" width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" fill=\\"none\\" stroke=\\"currentColor\\" stroke-width=\\"2\\" stroke-linecap=\\"round\\" stroke-linejoin=\\"round\\"><polyline points=\\"20 6 9 17 4 12\\"/></svg></span></div>"
+                    }' class="hidden">
+                        ${optionsHtml}
+                    </select>
+                `;
+
+                // Re-initialize Preline globally to catch the newly created element
+                // We use setTimeout to ensure the browser has finished rendering the new HTML
+                setTimeout(() => {
+                    if (window.HSStaticMethods && typeof window.HSStaticMethods.autoInit === 'function') {
+                        window.HSStaticMethods.autoInit();
+                    }
+                }, 10);
             }
         }
 

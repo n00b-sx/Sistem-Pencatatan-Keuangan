@@ -61,7 +61,9 @@ class TransactionController extends Controller
             ->limit(5)
             ->get();
 
-        $query = Transaction::with(['category', 'sourceAccount', 'destinationAccount', 'details'])->orderBy('date', 'desc');
+        $query = Transaction::with(['category', 'sourceAccount', 'destinationAccount', 'details'])
+            ->orderBy('date', 'desc')
+            ->orderBy('created_at', 'desc');
 
         $timeMode = $request->input('time_mode');
         if ($timeMode === 'daily') {

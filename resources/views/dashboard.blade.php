@@ -79,6 +79,45 @@
         </div>
     </div>
 
+    <!-- Status Anggaran Bulanan -->
+    @if($budgetedCategories->count() > 0)
+    <div class="mt-8 mb-8">
+        <h2 class="text-lg font-bold text-gray-800 mb-4">Status Anggaran ({{ $budgetLabel }})</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach($budgetedCategories as $cat)
+                @php
+                    $percentage = min($cat->usage_percentage, 100);
+                    $bgColor = 'bg-green-500';
+                    $textColor = 'text-green-600';
+                    if ($percentage >= 80 && $percentage < 100) {
+                        $bgColor = 'bg-yellow-500';
+                        $textColor = 'text-yellow-600';
+                    } elseif ($percentage >= 100) {
+                        $bgColor = 'bg-red-500';
+                        $textColor = 'text-red-600';
+                    }
+                @endphp
+                <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 hover:shadow-md transition">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl leading-none">{{ $cat->icon ?: '📁' }}</span>
+                            <span class="font-bold text-gray-800">{{ $cat->name }}</span>
+                        </div>
+                        <span class="text-sm font-semibold {{ $textColor }}">{{ number_format($cat->usage_percentage, 1, ',', '.') }}%</span>
+                    </div>
+                    <div class="flex w-full h-2 bg-gray-200 rounded-full overflow-hidden mb-2">
+                        <div class="flex flex-col justify-center overflow-hidden {{ $bgColor }}" role="progressbar" style="width: {{ number_format($percentage, 2, '.', '') }}%" aria-valuenow="{{ number_format($percentage, 2, '.', '') }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="flex justify-between items-center text-xs text-gray-500">
+                        <span>Terpakai: Rp {{ number_format($cat->current_usage, 0, ',', '.') }}</span>
+                        <span>Limit: Rp {{ number_format($cat->budget_limit, 0, ',', '.') }}</span>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
     <!-- Distribusi & Breakdown Kategori -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         

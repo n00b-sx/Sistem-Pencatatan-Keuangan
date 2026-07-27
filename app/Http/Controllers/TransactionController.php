@@ -26,6 +26,20 @@ class TransactionController extends Controller
         $totalBalance = $accounts->sum('current_balance');
 
         $now = Carbon::now();
+        $budgetMonth = $now->month;
+        $budgetYear = $now->year;
+        $timeMode = $request->input('time_mode');
+
+        if ($timeMode === 'monthly') {
+            $monthVal = $request->input('month_val');
+            if ($monthVal) {
+                $parts = explode('-', $monthVal);
+                if (count($parts) == 2) {
+                    $budgetYear = $parts[0];
+                    $budgetMonth = $parts[1];
+                }
+            }
+        }
 
         $totalIncomeThisMonth = Transaction::where('type', 'in')
             ->whereMonth('date', $now->month)
@@ -61,9 +75,26 @@ class TransactionController extends Controller
             ->limit(5)
             ->get();
 
+        $budgetedCategories = \App\Models\Category::whereNotNull('budget_limit')
+            ->where('type', 'out')
+            ->get()
+            ->map(function($cat) use ($budgetMonth, $budgetYear) {
+                $usage = Transaction::where('category_id', $cat->id)
+                    ->whereMonth('date', $budgetMonth)
+                    ->whereYear('date', $budgetYear)
+                    ->sum('amount');
+                $cat->current_usage = $usage;
+                $cat->usage_percentage = $cat->budget_limit > 0 ? ($usage / $cat->budget_limit) * 100 : 0;
+                return $cat;
+            });
+
+        $budgetLabel = Carbon::createFromDate($budgetYear, $budgetMonth, 1)->translatedFormat('F Y');
+
         $query = Transaction::with(['category', 'sourceAccount', 'destinationAccount', 'details'])
             ->orderBy('date', 'desc')
             ->orderBy('created_at', 'desc');
+
+        // Note: the time filter logic for the transaction table remains below...
 
         $timeMode = $request->input('time_mode');
         if ($timeMode === 'daily') {
@@ -95,7 +126,9 @@ class TransactionController extends Controller
             'topPemasukan',
             'topPengeluaran',
             'transactions',
-            'categories'
+            'categories',
+            'budgetedCategories',
+            'budgetLabel'
         ));
     }
 

@@ -18,6 +18,7 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
             'type' => 'required|in:in,out',
             'icon' => 'nullable|string|max:10',
+            'budget_limit' => 'nullable|numeric|min:0',
         ]);
 
         Category::create($validated);
@@ -31,6 +32,7 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
             'type' => 'required|in:in,out',
             'icon' => 'nullable|string|max:10',
+            'budget_limit' => 'nullable|numeric|min:0',
         ]);
 
         $category->update($validated);

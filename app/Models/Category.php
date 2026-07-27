@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $fillable = ['name', 'type', 'icon'];
+    protected $fillable = [
+        'name',
+        'type',
+        'icon',
+        'budget_limit',
+    ];
 
     public function transactions()
     {

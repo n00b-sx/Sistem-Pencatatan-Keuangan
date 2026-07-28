@@ -205,26 +205,26 @@
         <div class="px-6 py-4 border-b border-gray-200 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
             <h2 class="text-lg font-bold text-gray-800 whitespace-nowrap">Rincian Riwayat Transaksi</h2>
             <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-                <div class="relative">
-                    <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5">
-                        <svg class="shrink-0 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <form id="formTimeFilter" action="{{ route('dashboard') }}" method="GET" class="flex flex-col sm:flex-row gap-2 items-center w-full lg:w-auto">
+                    <div class="relative w-full sm:w-auto">
+                        <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5">
+                            <svg class="shrink-0 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                        </div>
+                        <input type="text" name="search" id="searchInput" value="{{ request('search') }}" placeholder="Cari data..." class="py-2 ps-10 pe-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm">
                     </div>
-                    <input type="text" id="searchInput" placeholder="Cari catatan..." class="py-2 ps-10 pe-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm">
-                </div>
-                <select id="categoryFilter" data-hs-select='{
-                    "placeholder": "Semua Kategori",
-                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
-                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-3 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
-                    "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto",
-                    "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
-                    "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
-                }' class="hidden">
-                    <option value="">Semua Kategori</option>
-                    @foreach($categories as $cat)
-                        <option value="{{ $cat->name }}">{{ $cat->name }}</option>
-                    @endforeach
-                </select>
-                <form id="formTimeFilter" action="{{ route('dashboard') }}" method="GET" class="flex flex-col sm:flex-row gap-2 items-center">
+                    <select name="category" id="categoryFilter" data-hs-select='{
+                        "placeholder": "Semua Kategori",
+                        "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                        "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-3 pe-9 flex gap-x-2 text-nowrap w-full sm:w-auto cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+                        "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto",
+                        "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
+                        "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                    }' class="hidden">
+                        <option value="">Semua Kategori</option>
+                        @foreach($categories as $cat)
+                            <option value="{{ $cat->name }}" {{ request('category') == $cat->name ? 'selected' : '' }}>{{ $cat->name }}</option>
+                        @endforeach
+                    </select>
                     <select name="time_mode" id="time_mode" data-hs-select='{
                         "placeholder": "Pilih Waktu",
                         "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
@@ -323,8 +323,8 @@
                         <td colspan="4" class="px-6 py-4 whitespace-nowrap text-end text-sm font-bold text-gray-800 uppercase tracking-wider">Summary:</td>
                         <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-bold text-gray-900">
                             <div class="flex flex-col items-end gap-1">
-                                <span class="text-green-600">In: Rp <span id="filteredIn">0</span></span>
-                                <span class="text-red-600">Out: Rp <span id="filteredOut">0</span></span>
+                                <span class="text-green-600">In: Rp <span id="filteredIn">{{ number_format($totalFilteredIn, 0, ',', '.') }}</span></span>
+                                <span class="text-red-600">Out: Rp <span id="filteredOut">{{ number_format($totalFilteredOut, 0, ',', '.') }}</span></span>
                             </div>
                         </td>
                         <td></td>
@@ -343,53 +343,6 @@
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('searchInput');
-        const categoryFilter = document.getElementById('categoryFilter');
-        const rows = document.querySelectorAll('.trx-row');
-        const filteredInEl = document.getElementById('filteredIn');
-        const filteredOutEl = document.getElementById('filteredOut');
-
-        function formatRupiah(number) {
-            return new Intl.NumberFormat('id-ID').format(number);
-        }
-
-        function filterTable() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const category = categoryFilter.value;
-            
-            let totalIn = 0;
-            let totalOut = 0;
-
-            rows.forEach(row => {
-                const text = row.querySelector('.search-target').textContent.toLowerCase();
-                const rowCat = row.getAttribute('data-category');
-                const rowType = row.getAttribute('data-type');
-                const rowAmount = parseFloat(row.getAttribute('data-amount'));
-
-                let matchSearch = text.includes(searchTerm);
-                let matchCat = category === "" || rowCat === category;
-
-                if (matchSearch && matchCat) {
-                    row.style.display = '';
-                    if (rowType === 'in') totalIn += rowAmount;
-                    if (rowType === 'out') totalOut += rowAmount;
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-
-            filteredInEl.textContent = formatRupiah(totalIn);
-            filteredOutEl.textContent = formatRupiah(totalOut);
-        }
-
-        searchInput.addEventListener('input', filterTable);
-        categoryFilter.addEventListener('change', filterTable);
-
-        // Initial calc
-        filterTable();
-    });
-
     // Toggle time inputs on change
     function toggleTimeInputs() {
         const mode = document.getElementById('time_mode').value;

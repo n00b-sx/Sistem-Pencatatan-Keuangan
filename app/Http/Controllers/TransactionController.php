@@ -114,6 +114,43 @@ class TransactionController extends Controller
             $query->whereYear('date', $year);
         }
 
+        if ($request->filled('category')) {
+            $query->whereHas('category', function($q) use ($request) {
+                $q->where('name', $request->category);
+            });
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $searchLower = strtolower($search);
+            
+            $query->where(function($q) use ($search, $searchLower) {
+                $q->where('description', 'like', "%{$search}%")
+                  ->orWhereHas('category', function($q2) use ($search) {
+                      $q2->where('name', 'like', "%{$search}%");
+                  })
+                  ->orWhereHas('sourceAccount', function($q3) use ($search) {
+                      $q3->where('name', 'like', "%{$search}%");
+                  })
+                  ->orWhereHas('destinationAccount', function($q4) use ($search) {
+                      $q4->where('name', 'like', "%{$search}%");
+                  });
+
+                if (str_contains('pemasukan', $searchLower)) {
+                    $q->orWhere('type', 'in');
+                }
+                if (str_contains('pengeluaran', $searchLower)) {
+                    $q->orWhere('type', 'out');
+                }
+                if (str_contains('mutasi', $searchLower)) {
+                    $q->orWhere('type', 'transfer');
+                }
+            });
+        }
+
+        $totalFilteredIn = (clone $query)->where('type', 'in')->sum('amount');
+        $totalFilteredOut = (clone $query)->where('type', 'out')->sum('amount');
+
         $transactions = $query->paginate(20)->withQueryString();
         $categories = \App\Models\Category::all();
 
@@ -128,7 +165,9 @@ class TransactionController extends Controller
             'transactions',
             'categories',
             'budgetedCategories',
-            'budgetLabel'
+            'budgetLabel',
+            'totalFilteredIn',
+            'totalFilteredOut'
         ));
     }
 

@@ -114,7 +114,7 @@ class TransactionController extends Controller
             $query->whereYear('date', $year);
         }
 
-        $transactions = $query->get();
+        $transactions = $query->paginate(20)->withQueryString();
         $categories = \App\Models\Category::all();
 
         return view('dashboard', compact(

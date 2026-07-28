@@ -264,7 +264,7 @@
                 <tbody class="divide-y divide-gray-200">
                     @foreach($transactions as $trx)
                     <tr class="trx-row hover:bg-gray-50 transition" data-date="{{ $trx->date->format('Y-m-d') }}" data-type="{{ $trx->type }}" data-category="{{ $trx->category ? $trx->category->name : '' }}" data-amount="{{ $trx->amount }}">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $trx->date->format('d/m/Y') }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $trx->date->locale('id')->translatedFormat('l, d F Y') }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                             @if($trx->type == 'in') <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-md text-xs font-medium bg-green-100 text-green-700">Pemasukan</span>
                             @elseif($trx->type == 'out') <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-md text-xs font-medium bg-red-100 text-red-700">Pengeluaran</span>

@@ -5,7 +5,7 @@
     <!-- Stat Cards -->
     <div class="grid sm:grid-cols-3 gap-4 sm:gap-6">
         <!-- Card -->
-        <div class="flex flex-col bg-white border shadow-sm rounded-xl">
+        <div class="flex flex-col bg-white border shadow-sm rounded-xl border-gray-100 transition hover:shadow-md">
             <div class="p-4 md:p-5">
                 <div class="flex items-center gap-x-2">
                     <p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Total Saldo Bersih</p>
@@ -19,7 +19,7 @@
         </div>
         <!-- End Card -->
         <!-- Card -->
-        <div class="flex flex-col bg-white border shadow-sm rounded-xl">
+        <div class="flex flex-col bg-white border shadow-sm rounded-xl border-gray-100 transition hover:shadow-md">
             <div class="p-4 md:p-5">
                 <div class="flex items-center gap-x-2">
                     <p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Total Pemasukan (Bulan Ini)</p>
@@ -33,7 +33,7 @@
         </div>
         <!-- End Card -->
         <!-- Card -->
-        <div class="flex flex-col bg-white border shadow-sm rounded-xl">
+        <div class="flex flex-col bg-white border shadow-sm rounded-xl border-gray-100 transition hover:shadow-md">
             <div class="p-4 md:p-5">
                 <div class="flex items-center gap-x-2">
                     <p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Total Pengeluaran (Bulan Ini)</p>
@@ -79,6 +79,45 @@
         </div>
     </div>
 
+    <!-- Status Anggaran Bulanan -->
+    @if($budgetedCategories->count() > 0)
+    <div class="mt-8 mb-8">
+        <h2 class="text-lg font-bold text-gray-800 mb-4">Status Anggaran ({{ $budgetLabel }})</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach($budgetedCategories as $cat)
+                @php
+                    $percentage = min($cat->usage_percentage, 100);
+                    $bgColor = 'bg-green-500';
+                    $textColor = 'text-green-600';
+                    if ($percentage >= 80 && $percentage < 100) {
+                        $bgColor = 'bg-yellow-500';
+                        $textColor = 'text-yellow-600';
+                    } elseif ($percentage >= 100) {
+                        $bgColor = 'bg-red-500';
+                        $textColor = 'text-red-600';
+                    }
+                @endphp
+                <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 hover:shadow-md transition">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl leading-none">{{ $cat->icon ?: '📁' }}</span>
+                            <span class="font-bold text-gray-800">{{ $cat->name }}</span>
+                        </div>
+                        <span class="text-sm font-semibold {{ $textColor }}">{{ number_format($cat->usage_percentage, 1, ',', '.') }}%</span>
+                    </div>
+                    <div class="flex w-full h-2 bg-gray-200 rounded-full overflow-hidden mb-2">
+                        <div class="flex flex-col justify-center overflow-hidden {{ $bgColor }}" role="progressbar" style="width: {{ number_format($percentage, 2, '.', '') }}%" aria-valuenow="{{ number_format($percentage, 2, '.', '') }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="flex justify-between items-center text-xs text-gray-500">
+                        <span>Terpakai: Rp {{ number_format($cat->current_usage, 0, ',', '.') }}</span>
+                        <span>Limit: Rp {{ number_format($cat->budget_limit, 0, ',', '.') }}</span>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
     <!-- Distribusi & Breakdown Kategori -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
@@ -89,7 +128,7 @@
             </div>
             <div class="overflow-x-auto max-h-[16rem] overflow-y-auto pr-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full">
                 <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-white sticky top-0 z-10 shadow-sm">
+                    <thead class="bg-white sticky top-0 z-10">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-start text-xs font-semibold text-gray-500 uppercase">Peruntukan</th>
                             <th scope="col" class="px-6 py-3 text-end text-xs font-semibold text-gray-500 uppercase">Pemasukan</th>
@@ -166,26 +205,26 @@
         <div class="px-6 py-4 border-b border-gray-200 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
             <h2 class="text-lg font-bold text-gray-800 whitespace-nowrap">Rincian Riwayat Transaksi</h2>
             <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-                <div class="relative">
-                    <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5">
-                        <svg class="shrink-0 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <form id="formTimeFilter" action="{{ route('dashboard') }}" method="GET" class="flex flex-col sm:flex-row gap-2 items-center w-full lg:w-auto">
+                    <div class="relative w-full sm:w-auto">
+                        <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5">
+                            <svg class="shrink-0 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                        </div>
+                        <input type="text" name="search" id="searchInput" value="{{ request('search') }}" placeholder="Cari data..." class="py-2 ps-10 pe-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm">
                     </div>
-                    <input type="text" id="searchInput" placeholder="Cari catatan..." class="py-2 ps-10 pe-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm">
-                </div>
-                <select id="categoryFilter" data-hs-select='{
-                    "placeholder": "Semua Kategori",
-                    "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
-                    "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-3 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
-                    "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto",
-                    "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
-                    "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
-                }' class="hidden">
-                    <option value="">Semua Kategori</option>
-                    @foreach($categories as $cat)
-                        <option value="{{ $cat->name }}">{{ $cat->name }}</option>
-                    @endforeach
-                </select>
-                <form id="formTimeFilter" action="{{ route('dashboard') }}" method="GET" class="flex flex-col sm:flex-row gap-2 items-center">
+                    <select name="category" id="categoryFilter" data-hs-select='{
+                        "placeholder": "Semua Kategori",
+                        "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                        "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-2 ps-3 pe-9 flex gap-x-2 text-nowrap w-full sm:w-auto cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+                        "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto",
+                        "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100",
+                        "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-blue-600\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                    }' class="hidden">
+                        <option value="">Semua Kategori</option>
+                        @foreach($categories as $cat)
+                            <option value="{{ $cat->name }}" {{ request('category') == $cat->name ? 'selected' : '' }}>{{ $cat->name }}</option>
+                        @endforeach
+                    </select>
                     <select name="time_mode" id="time_mode" data-hs-select='{
                         "placeholder": "Pilih Waktu",
                         "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
@@ -225,7 +264,7 @@
                 <tbody class="divide-y divide-gray-200">
                     @foreach($transactions as $trx)
                     <tr class="trx-row hover:bg-gray-50 transition" data-date="{{ $trx->date->format('Y-m-d') }}" data-type="{{ $trx->type }}" data-category="{{ $trx->category ? $trx->category->name : '' }}" data-amount="{{ $trx->amount }}">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $trx->date->format('d/m/Y') }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $trx->date->locale('id')->translatedFormat('l, d F Y') }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                             @if($trx->type == 'in') <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-md text-xs font-medium bg-green-100 text-green-700">Pemasukan</span>
                             @elseif($trx->type == 'out') <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-md text-xs font-medium bg-red-100 text-red-700">Pengeluaran</span>
@@ -261,16 +300,18 @@
                                     @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:underline text-xs font-medium">Hapus</button>
                                 </form>
-                                <div class="hs-tooltip inline-block relative group cursor-pointer ml-1">
-                                    <div class="hs-tooltip-toggle flex items-center justify-center text-gray-400 hover:text-blue-600 transition-colors">
+                                <div class="relative group cursor-pointer ml-1 inline-block">
+                                    <div class="flex items-center justify-center text-gray-400 hover:text-blue-600 transition-colors">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <circle cx="12" cy="12" r="10"></circle>
                                             <path d="M12 16v-4"></path>
                                             <path d="M12 8h.01"></path>
                                         </svg>
-                                        <div class="hs-tooltip-content opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm whitespace-nowrap bottom-full mb-2 left-1/2 -translate-x-1/2 group-hover:opacity-100 group-hover:visible" role="tooltip">
-                                            Tujuan/Sumber: {{ $trx->related_party ?? 'Tidak ada data' }}<br/>
-                                            Peruntukan: {{ $trx->allocation ?? '-' }}
+                                    </div>
+                                    <div class="opacity-0 transition-opacity absolute invisible z-50 py-2 px-3 bg-gray-900 text-xs font-medium text-white rounded shadow-sm w-max bottom-full mb-2 left-1/2 -translate-x-1/2 group-hover:opacity-100 group-hover:visible pointer-events-none">
+                                        <div class="text-left flex flex-col gap-1">
+                                            <span>Tujuan/Sumber: {{ $trx->related_party ?? 'Tidak ada data' }}</span>
+                                            <span>Peruntukan: {{ $trx->allocation ?? '-' }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -284,8 +325,8 @@
                         <td colspan="4" class="px-6 py-4 whitespace-nowrap text-end text-sm font-bold text-gray-800 uppercase tracking-wider">Summary:</td>
                         <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-bold text-gray-900">
                             <div class="flex flex-col items-end gap-1">
-                                <span class="text-green-600">In: Rp <span id="filteredIn">0</span></span>
-                                <span class="text-red-600">Out: Rp <span id="filteredOut">0</span></span>
+                                <span class="text-green-600">In: Rp <span id="filteredIn">{{ number_format($totalFilteredIn, 0, ',', '.') }}</span></span>
+                                <span class="text-red-600">Out: Rp <span id="filteredOut">{{ number_format($totalFilteredOut, 0, ',', '.') }}</span></span>
                             </div>
                         </td>
                         <td></td>
@@ -293,59 +334,17 @@
                 </tfoot>
             </table>
         </div>
+        @if($transactions->hasPages())
+        <div class="px-6 py-4 border-t border-gray-200">
+            {{ $transactions->links() }}
+        </div>
+        @endif
     </div>
 </div>
 @endsection
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('searchInput');
-        const categoryFilter = document.getElementById('categoryFilter');
-        const rows = document.querySelectorAll('.trx-row');
-        const filteredInEl = document.getElementById('filteredIn');
-        const filteredOutEl = document.getElementById('filteredOut');
-
-        function formatRupiah(number) {
-            return new Intl.NumberFormat('id-ID').format(number);
-        }
-
-        function filterTable() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const category = categoryFilter.value;
-            
-            let totalIn = 0;
-            let totalOut = 0;
-
-            rows.forEach(row => {
-                const text = row.querySelector('.search-target').textContent.toLowerCase();
-                const rowCat = row.getAttribute('data-category');
-                const rowType = row.getAttribute('data-type');
-                const rowAmount = parseFloat(row.getAttribute('data-amount'));
-
-                let matchSearch = text.includes(searchTerm);
-                let matchCat = category === "" || rowCat === category;
-
-                if (matchSearch && matchCat) {
-                    row.style.display = '';
-                    if (rowType === 'in') totalIn += rowAmount;
-                    if (rowType === 'out') totalOut += rowAmount;
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-
-            filteredInEl.textContent = formatRupiah(totalIn);
-            filteredOutEl.textContent = formatRupiah(totalOut);
-        }
-
-        searchInput.addEventListener('input', filterTable);
-        categoryFilter.addEventListener('change', filterTable);
-
-        // Initial calc
-        filterTable();
-    });
-
     // Toggle time inputs on change
     function toggleTimeInputs() {
         const mode = document.getElementById('time_mode').value;

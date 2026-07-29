@@ -187,6 +187,11 @@
                                 <option value="in">Pemasukan</option>
                             </select>
                         </div>
+                        <div id="wrapper_budget_limit">
+                            <label for="category_budget_display" class="block text-sm font-medium text-gray-700 mb-2">Limit Anggaran Bulanan (Opsional)</label>
+                            <input type="text" id="category_budget_display" class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm" placeholder="Contoh: 1.000.000 (Kosongkan jika tak ada limit)">
+                            <input type="hidden" id="category_budget" name="budget_limit">
+                        </div>
                         <div class="flex gap-x-2">
                             <button type="submit" id="category_submit_btn" class="py-2 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none transition w-full sm:w-auto">
                                 Tambah Kategori
@@ -205,6 +210,7 @@
                             <tr>
                                 <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase">Kategori</th>
                                 <th scope="col" class="px-4 py-3 text-start text-xs font-semibold text-gray-500 uppercase">Tipe</th>
+                                <th scope="col" class="px-4 py-3 text-end text-xs font-semibold text-gray-500 uppercase">Limit Bulanan</th>
                                 <th scope="col" class="px-4 py-3 text-end text-xs font-semibold text-gray-500 uppercase">Aksi</th>
                             </tr>
                         </thead>
@@ -224,9 +230,16 @@
                                     @else <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-md text-xs font-medium bg-red-100 text-red-800">Pengeluaran</span>
                                     @endif
                                 </td>
+                                <td class="px-4 py-3 whitespace-nowrap text-end text-sm">
+                                    @if($cat->budget_limit)
+                                        <span class="font-medium text-gray-800">Rp {{ number_format($cat->budget_limit, 0, ',', '.') }}</span>
+                                    @else
+                                        <span class="text-gray-400 italic">Tanpa Limit</span>
+                                    @endif
+                                </td>
                                 <td class="px-4 py-3 whitespace-nowrap text-end text-sm font-medium">
                                     <button type="button" class="inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-amber-600 hover:text-amber-800 disabled:opacity-50 disabled:pointer-events-none mr-2"
-                                        onclick="editCategory({{ $cat->id }}, '{{ addslashes($cat->name) }}', '{{ addslashes($cat->icon) }}', '{{ $cat->type }}')">
+                                        onclick="editCategory({{ $cat->id }}, '{{ addslashes($cat->name) }}', '{{ addslashes($cat->icon) }}', '{{ $cat->type }}', '{{ $cat->budget_limit }}')">
                                         Edit
                                     </button>
                                     <form action="{{ route('categories.destroy', $cat->id) }}" method="POST" class="inline">
@@ -239,7 +252,7 @@
                                 </td>
                             </tr>
                             @empty
-                            <tr><td colspan="3" class="px-4 py-3 text-center text-sm text-gray-500">Belum ada kategori</td></tr>
+                            <tr><td colspan="4" class="px-4 py-3 text-center text-sm text-gray-500">Belum ada kategori</td></tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -291,6 +304,8 @@
     const categoryName = document.getElementById('category_name');
     const categoryIcon = document.getElementById('category_icon');
     const categoryType = document.getElementById('category_type');
+    const categoryBudgetDisplay = document.getElementById('category_budget_display');
+    const categoryBudgetHidden = document.getElementById('category_budget');
 
     document.addEventListener('DOMContentLoaded', function() {
         // Account Balance Formatting
@@ -307,6 +322,29 @@
 
         accountForm.addEventListener('submit', function(e) {
             if(!balanceHidden.value) balanceHidden.value = '0';
+        });
+
+        // Category Budget Formatting
+        categoryBudgetDisplay.addEventListener('input', function(e) {
+            let val = unformatNumber(this.value).replace(/[^0-9]/g, '');
+            if(val === '') {
+                this.value = '';
+                categoryBudgetHidden.value = '';
+                return;
+            }
+            this.value = formatNumber(val);
+            categoryBudgetHidden.value = val;
+        });
+
+        // Tampilkan/sembunyikan input limit berdasarkan tipe (Opsional: Limit hanya logis untuk pengeluaran)
+        categoryType.addEventListener('change', function(e) {
+            if (this.value === 'in') {
+                document.getElementById('wrapper_budget_limit').style.display = 'none';
+                categoryBudgetDisplay.value = '';
+                categoryBudgetHidden.value = '';
+            } else {
+                document.getElementById('wrapper_budget_limit').style.display = 'block';
+            }
         });
     });
 
@@ -344,7 +382,7 @@
     }
 
     // --- Functions for Category ---
-    function editCategory(id, name, icon, type) {
+    function editCategory(id, name, icon, type, budget_limit) {
         categoryFormTitle.textContent = 'Edit Data Kategori';
         categorySubmitBtn.textContent = 'Update Data';
         categoryCancelBtn.classList.remove('hidden');
@@ -357,6 +395,17 @@
         categoryName.value = name;
         categoryIcon.value = icon;
         categoryType.value = type;
+        
+        if (budget_limit) {
+            categoryBudgetHidden.value = budget_limit;
+            categoryBudgetDisplay.value = formatNumber(budget_limit);
+        } else {
+            categoryBudgetHidden.value = '';
+            categoryBudgetDisplay.value = '';
+        }
+
+        // Trigger change for type to show/hide budget input
+        categoryType.dispatchEvent(new Event('change'));
         
         // Scroll to form smoothly
         categoryFormTitle.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -372,6 +421,8 @@
         categoryForm.action = categoryActionBase; // Back to /categories
         
         categoryForm.reset();
+        categoryBudgetHidden.value = '';
+        document.getElementById('wrapper_budget_limit').style.display = 'block';
     }
 </script>
 @endpush

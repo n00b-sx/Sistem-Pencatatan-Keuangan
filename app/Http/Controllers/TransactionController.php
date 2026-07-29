@@ -26,6 +26,20 @@ class TransactionController extends Controller
         $totalBalance = $accounts->sum('current_balance');
 
         $now = Carbon::now();
+        $budgetMonth = $now->month;
+        $budgetYear = $now->year;
+        $timeMode = $request->input('time_mode');
+
+        if ($timeMode === 'monthly') {
+            $monthVal = $request->input('month_val');
+            if ($monthVal) {
+                $parts = explode('-', $monthVal);
+                if (count($parts) == 2) {
+                    $budgetYear = $parts[0];
+                    $budgetMonth = $parts[1];
+                }
+            }
+        }
 
         $totalIncomeThisMonth = Transaction::where('type', 'in')
             ->whereMonth('date', $now->month)
@@ -61,9 +75,26 @@ class TransactionController extends Controller
             ->limit(5)
             ->get();
 
+        $budgetedCategories = \App\Models\Category::whereNotNull('budget_limit')
+            ->where('type', 'out')
+            ->get()
+            ->map(function($cat) use ($budgetMonth, $budgetYear) {
+                $usage = Transaction::where('category_id', $cat->id)
+                    ->whereMonth('date', $budgetMonth)
+                    ->whereYear('date', $budgetYear)
+                    ->sum('amount');
+                $cat->current_usage = $usage;
+                $cat->usage_percentage = $cat->budget_limit > 0 ? ($usage / $cat->budget_limit) * 100 : 0;
+                return $cat;
+            });
+
+        $budgetLabel = Carbon::createFromDate($budgetYear, $budgetMonth, 1)->translatedFormat('F Y');
+
         $query = Transaction::with(['category', 'sourceAccount', 'destinationAccount', 'details'])
             ->orderBy('date', 'desc')
             ->orderBy('created_at', 'desc');
+
+        // Note: the time filter logic for the transaction table remains below...
 
         $timeMode = $request->input('time_mode');
         if ($timeMode === 'daily') {
@@ -83,7 +114,44 @@ class TransactionController extends Controller
             $query->whereYear('date', $year);
         }
 
-        $transactions = $query->get();
+        if ($request->filled('category')) {
+            $query->whereHas('category', function($q) use ($request) {
+                $q->where('name', $request->category);
+            });
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $searchLower = strtolower($search);
+            
+            $query->where(function($q) use ($search, $searchLower) {
+                $q->where('description', 'like', "%{$search}%")
+                  ->orWhereHas('category', function($q2) use ($search) {
+                      $q2->where('name', 'like', "%{$search}%");
+                  })
+                  ->orWhereHas('sourceAccount', function($q3) use ($search) {
+                      $q3->where('name', 'like', "%{$search}%");
+                  })
+                  ->orWhereHas('destinationAccount', function($q4) use ($search) {
+                      $q4->where('name', 'like', "%{$search}%");
+                  });
+
+                if (str_contains('pemasukan', $searchLower)) {
+                    $q->orWhere('type', 'in');
+                }
+                if (str_contains('pengeluaran', $searchLower)) {
+                    $q->orWhere('type', 'out');
+                }
+                if (str_contains('mutasi', $searchLower)) {
+                    $q->orWhere('type', 'transfer');
+                }
+            });
+        }
+
+        $totalFilteredIn = (clone $query)->where('type', 'in')->sum('amount');
+        $totalFilteredOut = (clone $query)->where('type', 'out')->sum('amount');
+
+        $transactions = $query->paginate(20)->withQueryString();
         $categories = \App\Models\Category::all();
 
         return view('dashboard', compact(
@@ -95,7 +163,11 @@ class TransactionController extends Controller
             'topPemasukan',
             'topPengeluaran',
             'transactions',
-            'categories'
+            'categories',
+            'budgetedCategories',
+            'budgetLabel',
+            'totalFilteredIn',
+            'totalFilteredOut'
         ));
     }
 

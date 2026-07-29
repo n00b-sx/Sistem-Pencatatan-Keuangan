@@ -5,7 +5,7 @@
     <!-- Stat Cards -->
     <div class="grid sm:grid-cols-3 gap-4 sm:gap-6">
         <!-- Card -->
-        <div class="flex flex-col bg-white border shadow-sm rounded-xl">
+        <div class="flex flex-col bg-white border shadow-sm rounded-xl border-gray-100 transition hover:shadow-md">
             <div class="p-4 md:p-5">
                 <div class="flex items-center gap-x-2">
                     <p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Total Saldo Bersih</p>
@@ -19,7 +19,7 @@
         </div>
         <!-- End Card -->
         <!-- Card -->
-        <div class="flex flex-col bg-white border shadow-sm rounded-xl">
+        <div class="flex flex-col bg-white border shadow-sm rounded-xl border-gray-100 transition hover:shadow-md">
             <div class="p-4 md:p-5">
                 <div class="flex items-center gap-x-2">
                     <p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Total Pemasukan (Bulan Ini)</p>
@@ -33,7 +33,7 @@
         </div>
         <!-- End Card -->
         <!-- Card -->
-        <div class="flex flex-col bg-white border shadow-sm rounded-xl">
+        <div class="flex flex-col bg-white border shadow-sm rounded-xl border-gray-100 transition hover:shadow-md">
             <div class="p-4 md:p-5">
                 <div class="flex items-center gap-x-2">
                     <p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Total Pengeluaran (Bulan Ini)</p>
@@ -128,7 +128,7 @@
             </div>
             <div class="overflow-x-auto max-h-[16rem] overflow-y-auto pr-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full">
                 <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-white sticky top-0 z-10 shadow-sm">
+                    <thead class="bg-white sticky top-0 z-10">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-start text-xs font-semibold text-gray-500 uppercase">Peruntukan</th>
                             <th scope="col" class="px-6 py-3 text-end text-xs font-semibold text-gray-500 uppercase">Pemasukan</th>
@@ -300,16 +300,18 @@
                                     @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:underline text-xs font-medium">Hapus</button>
                                 </form>
-                                <div class="hs-tooltip inline-block relative group cursor-pointer ml-1">
-                                    <div class="hs-tooltip-toggle flex items-center justify-center text-gray-400 hover:text-blue-600 transition-colors">
+                                <div class="relative group cursor-pointer ml-1 inline-block">
+                                    <div class="flex items-center justify-center text-gray-400 hover:text-blue-600 transition-colors">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <circle cx="12" cy="12" r="10"></circle>
                                             <path d="M12 16v-4"></path>
                                             <path d="M12 8h.01"></path>
                                         </svg>
-                                        <div class="hs-tooltip-content opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm whitespace-nowrap bottom-full mb-2 left-1/2 -translate-x-1/2 group-hover:opacity-100 group-hover:visible" role="tooltip">
-                                            Tujuan/Sumber: {{ $trx->related_party ?? 'Tidak ada data' }}<br/>
-                                            Peruntukan: {{ $trx->allocation ?? '-' }}
+                                    </div>
+                                    <div class="opacity-0 transition-opacity absolute invisible z-50 py-2 px-3 bg-gray-900 text-xs font-medium text-white rounded shadow-sm w-max bottom-full mb-2 left-1/2 -translate-x-1/2 group-hover:opacity-100 group-hover:visible pointer-events-none">
+                                        <div class="text-left flex flex-col gap-1">
+                                            <span>Tujuan/Sumber: {{ $trx->related_party ?? 'Tidak ada data' }}</span>
+                                            <span>Peruntukan: {{ $trx->allocation ?? '-' }}</span>
                                         </div>
                                     </div>
                                 </div>
